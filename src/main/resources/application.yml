@@ -1,0 +1,21 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: wjhs
+
+  mvc:
+    pathmatch:
+      # 配置策略(swagger文档<https://doc.xiaominfo.com/docs/quick-start>)
+      matching-strategy: ant-path-matcher
+
+  profiles:
+    active: dev
+
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE}?serverTimezone=Asia/Shanghai&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: ${MYSQL_USER_NAME}
+      password: ${MySQL_PASSWORD}
