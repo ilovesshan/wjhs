@@ -78,6 +78,13 @@
             <version>6.1.0</version>
         </dependency>
 
+        <!-- h2 数据库 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- 单元测试  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
