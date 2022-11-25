@@ -1,6 +1,6 @@
 {
   "containerPort": 80,
-  "minNum": 0,
+  "minNum": 1,
   "maxNum": 5,
   "cpu": 1,
   "mem": 2,
@@ -18,7 +18,7 @@
   ],
   "envParams": {},
   "customLogs": "stdout",
-  "dataBaseName":"springboot_demo",
+  "dataBaseName":"wjhs",
   "executeSQLs":[
     "CREATE DATABASE IF NOT EXISTS wjhs;",
     "USE wjhs;"

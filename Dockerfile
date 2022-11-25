@@ -9,11 +9,11 @@ WORKDIR /app
 COPY src /app/src
 
 # 将pom.xml文件，拷贝到工作目录下
-COPY pom.xml /app
+COPY settings.xml pom.xml /app/
 
 # 执行代码编译命令
 # 自定义settings.xml, 选用国内镜像源以提高下载速度
-RUN mvn -f /app/pom.xml clean package '-Dspring.profiles.active=pro'
+RUN mvn -s /app/settings.xml -f /app/pom.xml clean package '-Dspring.profiles.active=pro'
 
 # 选择运行时基础镜像
 FROM alpine:3.13
@@ -23,11 +23,6 @@ FROM alpine:3.13
 
 # 使用 HTTPS 协议访问容器云调用证书安装
 RUN apk add ca-certificates
-
-ENV MYSQL_ADDRESS 10.38.106.215:3306
-ENV MYSQL_DATABASE wjhs
-ENV MYSQL_USER_NAME root
-ENV MySQL_PASSWORD 8PGCRqtc
 
 # 安装依赖包，如需其他依赖包，请到alpine依赖包管理(https://pkgs.alpinelinux.org/packages?name=php8*imagick*&branch=v3.13)查找。
 # 选用国内镜像源以提高下载速度
