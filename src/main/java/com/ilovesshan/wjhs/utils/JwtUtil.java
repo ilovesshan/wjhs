@@ -8,7 +8,7 @@ import io.jsonwebtoken.impl.DefaultClaims;
 
 import java.util.Date;
 
-public class TokenUtil {
+public class JwtUtil {
 
     // 生成token+
     public static String generatorToken(String userId, String username) {
