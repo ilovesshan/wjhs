@@ -4,6 +4,7 @@ import com.ilovesshan.wjhs.core.exception.AuthorizationException;
 import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.utils.R;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -46,15 +47,15 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 无权访问
+     * 暂无权限访问/操作该资源
      */
-    // @ExceptionHandler(value = {AccessDeniedException.class})
-    // @ResponseStatus(HttpStatus.FORBIDDEN)
-    // @ResponseBody
-    // public R handleMethodArgumentNotValidExceptionHandler(AccessDeniedException exception) {
-    //     exception.printStackTrace();
-    //     return R.builder().code(R.ERROR_CODE_FORBIDDEN).message(R.ERROR_MESSAGE_FORBIDDEN).build();
-    // }
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public R handleMethodArgumentNotValidExceptionHandler(AccessDeniedException exception) {
+        exception.printStackTrace();
+        return R.builder().code(R.ERROR_CODE_FORBIDDEN).message(R.ERROR_MESSAGE_FORBIDDEN).build();
+    }
 
 
     /**
