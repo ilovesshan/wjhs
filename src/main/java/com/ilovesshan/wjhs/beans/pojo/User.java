@@ -18,5 +18,4 @@ public class User {
     private Date lastVisitTime;
     private Date createTime;
     private Date updateTime;
-
 }

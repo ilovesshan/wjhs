@@ -21,6 +21,6 @@ public class UserAuthDto {
     private String username;
 
     @NotNull(message = "密码不能为空")
-    @Size(max = 32, min = 10, message = "密码长度在10到32个字符之间")
+    @Size(max = 32, min = 6, message = "密码长度在6到32个字符之间")
     private String password;
 }

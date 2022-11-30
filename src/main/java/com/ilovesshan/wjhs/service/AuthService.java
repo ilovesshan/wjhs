@@ -9,6 +9,9 @@ import com.ilovesshan.wjhs.beans.dto.UserAuthDto;
  * @date: 2022/11/30
  * @description:
  */
-public interface AuthService {
+public interface AuthService{
     String auth(UserAuthDto userAuthDto);
+
+    void logout();
+
 }

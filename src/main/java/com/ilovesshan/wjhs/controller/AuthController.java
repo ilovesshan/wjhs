@@ -41,6 +41,7 @@ public class AuthController {
     @ApiOperation("用户注销")
     @DeleteMapping
     public R logout() {
+        authService.logout();
         return R.success(R.SUCCESS_MESSAGE_LOGOUT);
     }
 
