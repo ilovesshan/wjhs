@@ -9,4 +9,9 @@
     <select id="findUserByUsername" resultType="com.ilovesshan.wjhs.beans.pojo.User">
         select <include refid="allColumns" /> from `user` where username like #{username};
     </select>
+
+
+    <select id="findUserById" resultType="com.ilovesshan.wjhs.beans.pojo.User">
+        select <include refid="allColumns" /> from `user` where id like #{id};
+    </select>
 </mapper>
