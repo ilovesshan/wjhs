@@ -26,6 +26,7 @@ public class GlobalExceptionHandler {
      * 自定义异常
      */
     @ExceptionHandler(CustomException.class)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public R handleException(CustomException exception) {
         exception.printStackTrace();
@@ -37,6 +38,7 @@ public class GlobalExceptionHandler {
      * 参数不匹配异常
      */
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public R handleMethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
         exception.printStackTrace();
