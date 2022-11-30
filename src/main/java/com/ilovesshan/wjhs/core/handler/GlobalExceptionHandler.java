@@ -1,7 +1,7 @@
-package com.ilovesshan.wjhs.handler;
+package com.ilovesshan.wjhs.core.handler;
 
-import com.ilovesshan.wjhs.exception.AuthorizationException;
-import com.ilovesshan.wjhs.exception.CustomException;
+import com.ilovesshan.wjhs.core.exception.AuthorizationException;
+import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.utils.R;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;

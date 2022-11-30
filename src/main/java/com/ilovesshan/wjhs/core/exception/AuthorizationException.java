@@ -1,4 +1,4 @@
-package com.ilovesshan.wjhs.exception;
+package com.ilovesshan.wjhs.core.exception;
 
 /**
  * Created with IntelliJ IDEA.
