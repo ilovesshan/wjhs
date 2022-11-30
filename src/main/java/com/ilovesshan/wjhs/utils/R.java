@@ -54,6 +54,7 @@ public class R implements Serializable {
 
     public static final String ERROR_MESSAGE_FORBIDDEN = "暂无权限访问/操作该资源";
     public static final String ERROR_INSUFFICIENT_AUTHENTICATION = "身份认证失败，无效的令牌";
+    public static final String ERROR_WX_VALID_CODE = "无效的code,请到微信开发平台校验";
 
     public static final String ERROR_USER_DISABLED = "账户不可用";
     public static final String ERROR_USER_LOCKED = "账户锁定";
