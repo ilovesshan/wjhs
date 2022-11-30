@@ -2,6 +2,7 @@ package com.ilovesshan.wjhs.controller;
 
 import com.ilovesshan.wjhs.beans.dto.UserAuthDto;
 import com.ilovesshan.wjhs.service.AuthService;
+import com.ilovesshan.wjhs.utils.JwtUtil;
 import com.ilovesshan.wjhs.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,7 @@ public class AuthController {
     public R auth(@Validated @RequestBody UserAuthDto userAuthDto) {
         String token = authService.auth(userAuthDto);
         HashMap<String, String> data = new HashMap<>();
+        data.put("id", JwtUtil.getUserId(token));
         data.put("username", userAuthDto.getUsername());
         data.put("token", token);
         return R.success(R.SUCCESS_MESSAGE_LOGIN, data);
