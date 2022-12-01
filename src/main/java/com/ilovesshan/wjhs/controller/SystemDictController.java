@@ -5,6 +5,8 @@ import com.ilovesshan.wjhs.beans.pojo.SystemDict;
 import com.ilovesshan.wjhs.beans.vo.SystemDictVo;
 import com.ilovesshan.wjhs.service.SystemDictService;
 import com.ilovesshan.wjhs.utils.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
  * @description:
  */
 
+@Api(tags = "字典模块")
 @RestController
 @RequestMapping("/systemDict")
 public class SystemDictController {
@@ -33,6 +36,7 @@ public class SystemDictController {
     private SystemDictConverter systemDictConverter;
 
     @GetMapping
+    @ApiOperation("查询字典列表")
     public R selectAll() {
         List<SystemDict> systemDicts = systemDictService.selectAll();
         List<SystemDictVo> systemDictVos = systemDicts.stream().map(systemDict -> systemDictConverter.po2vo(systemDict)).collect(Collectors.toList());

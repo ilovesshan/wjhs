@@ -4,6 +4,8 @@ import com.ilovesshan.wjhs.beans.converter.UserConverter;
 import com.ilovesshan.wjhs.beans.pojo.User;
 import com.ilovesshan.wjhs.service.UserService;
 import com.ilovesshan.wjhs.utils.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @description:
  */
 
+@Api(tags = "用户模块")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -29,6 +32,7 @@ public class UserController {
     private UserConverter userConverter;
 
 
+    @ApiOperation("根据ID获取用户信息")
     @GetMapping("/{id}")
     public R selectById(@PathVariable String id) {
         User user = userService.findUserById(id);
