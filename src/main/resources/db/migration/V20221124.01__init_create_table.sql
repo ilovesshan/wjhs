@@ -1,12 +1,34 @@
 -- DROP DATABASE IF EXISTS wjhs;
 -- CREATE DATABASE wjhs;
---
--- USE  wjhs;
+
+USE  wjhs;
 
 -- 备注：
 -- 			1、省市区街道sql语句, 从文件中自行导入
 -- 			2、CODE状态码参考：系统字典表(system_dict)
 
+
+
+-- ----------------------------
+-- 创建 系统字典表
+-- ----------------------------
+DROP TABLE IF EXISTS `system_dict`;
+CREATE TABLE `system_dict` (
+  `id` VARCHAR(32) NOT NULL  COMMENT '主键id',
+  `dict_code` int(3) NOT NULL COMMENT '数据类型编码',
+  `dict_name` VARCHAR(30) NOT NULL COMMENT '数据类型名称',
+  `dict_describe` VARCHAR(100) DEFAULT NULL COMMENT '描述',
+  `sort` int(5) DEFAULT '1' COMMENT '排序',
+  `create_by` VARCHAR(50) NOT NULL COMMENT '创建人',
+  `create_by_user_id` VARCHAR(32) NOT NULL COMMENT '创建人id',
+  `update_by` VARCHAR(50) DEFAULT NULL COMMENT '修改人',
+  `update_by_user_id` VARCHAR(32) DEFAULT NULL COMMENT '修改人id',
+  `is_delete`  CHAR(3) DEFAULT 15  NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
+  `create_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_dict_code` (`dict_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统字典类型表';
 
 
 -- ----------------------------
@@ -33,7 +55,6 @@ CREATE TABLE `operation_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='操作日志';
 
 
-
 -- ----------------------------
 -- 创建 用户登录日志表
 -- ----------------------------
@@ -46,78 +67,12 @@ CREATE TABLE `login_log`(
   `user_name` VARCHAR(10) NOT NULL COMMENT '用户名称',
   `login_ip` VARCHAR(128) DEFAULT NULL COMMENT '登录IP',
   `login_time` DATETIME(0) DEFAULT NULL COMMENT '登录时间',
-  `login_localtion` VARCHAR(50) DEFAULT NULL COMMENT '用户登录地址',
+  `login_location` VARCHAR(50) DEFAULT NULL COMMENT '用户登录地址',
   `is_delete` CHAR(3) DEFAULT 15 NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
   `browser` VARCHAR(50)  NULL DEFAULT '' COMMENT '浏览器类型',
 	`system_os` VARCHAR(50)  NULL DEFAULT '' COMMENT '操作系统',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT= '用户登录表';
-
-
-
-
--- ----------------------------
--- 创建 附件表
--- ----------------------------
-
-DROP TABLE IF EXISTS `attachment`;
-CREATE TABLE `attachment` (
-  `id` VARCHAR(32) NOT NULL  COMMENT '主键id',
-  `url` VARCHAR(100) NOT NULL COMMENT '访问地址',
-  `create_by_user_id` VARCHAR(32) NOT NULL COMMENT '创建人id',
-  `create_by_user_name` VARCHAR(10) NOT NULL COMMENT '创建人name',
-  `create_by_user_type` CHAR(3) NOT NULL COMMENT '用户类型(0:平台用户、1:微信用户、 2:骑手用户、 3:回收中心用户)',
-  `is_delete`  CHAR(3) DEFAULT 15 NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
-  `create_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统附件表';
-
-
-
--- ----------------------------
--- 创建 系统字典表
--- ----------------------------
-DROP TABLE IF EXISTS `system_dict`;
-CREATE TABLE `system_dict` (
-  `id` VARCHAR(32) NOT NULL  COMMENT '主键id',
-  `dict_code` int(3) NOT NULL COMMENT '数据类型编码',
-  `dict_name` VARCHAR(30) NOT NULL COMMENT '数据类型名称',
-  `dict_describe` VARCHAR(100) DEFAULT NULL COMMENT '描述',
-  `sort` int(5) DEFAULT '1' COMMENT '排序',
-  `create_by` VARCHAR(50) NOT NULL COMMENT '创建人',
-  `create_by_user_id` VARCHAR(32) NOT NULL COMMENT '创建人id',
-  `update_by` VARCHAR(50) DEFAULT NULL COMMENT '修改人',
-  `update_by_user_id` VARCHAR(32) DEFAULT NULL COMMENT '修改人id',
-  `is_delete`  CHAR(3) DEFAULT 15  NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
-  `create_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_dict_code` (`dict_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统字典类型表';
-
-
-
--- ----------------------------
--- 创建 骑手/回收中心用户/平台用户表
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`  (
-  `id` VARCHAR(32) NOT NULL  COMMENT '主键id',
-	`username` VARCHAR(32) NOT NULL COMMENT '用户名称',
-	`password` VARCHAR(255) NOT NULL COMMENT '用户密码',
-  `user_type` CHAR(3) NOT NULL COMMENT '用户类型(0:平台用户、1:微信用户、 2:骑手用户、 3:回收中心用户)',
-	`gender` CHAR(3) DEFAULT NULL COMMENT '性别(20:男、21:女)',
-	`attachment_id` VARCHAR(32) DEFAULT NULL COMMENT '附件id(头像)',
-  `nick_name` VARCHAR(255) DEFAULT NULL COMMENT '昵称',
-  `phone` VARCHAR(11) NOT NULL COMMENT '手机号',
-  `is_delete`  CHAR(3) DEFAULT 15 NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
-  `last_visit_time` DATETIME(0) DEFAULT NULL COMMENT '最后登录时间',
-  `create_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='骑手/回收中心用户/平台用户表';
-
 
 
 -- ----------------------------
@@ -143,37 +98,6 @@ CREATE TABLE `wx_user`  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='小程序用户信息表';
 
 
-
--- ----------------------------
--- 创建 角色表
--- ----------------------------
-DROP TABLE IF EXISTS `role`;
-create table `role`(
-  `id` CHAR(3) COMMENT '主键id',
-  `code` VARCHAR(10) NOT NULL COMMENT '角色编码',
-  `name` VARCHAR(20) NOT NULL COMMENT '角色名称',
-  `create_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
-
-
-
--- ----------------------------
--- 创建 用户角色关联表
--- ----------------------------
-DROP TABLE IF EXISTS `user_role`;
-create table `user_role`(
-  `id` VARCHAR(32) COMMENT '主键id',
-  `user_id` VARCHAR(32) COMMENT '用户id',
-  `role_id` VARCHAR(32) COMMENT '角色id',
-  `create_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色关联表';
-
-
-
 -- ----------------------------
 -- 创建 小程序用户地址信息表
 -- ----------------------------
@@ -194,7 +118,6 @@ CREATE TABLE `adress`  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='小程序用户地址信息表';
 
 
-
 -- ----------------------------
 -- 创建 小程序用户信息和地址信息关联表
 -- ----------------------------
@@ -210,7 +133,105 @@ CREATE TABLE `wx_user_address_rel`  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='小程序用户信息和地址信息关联表';
 
 
+-- ----------------------------
+-- 创建 骑手/回收中心用户/平台用户表
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user`  (
+  `id` VARCHAR(32) NOT NULL  COMMENT '主键id',
+	`username` VARCHAR(32) NOT NULL COMMENT '用户名称',
+	`password` VARCHAR(255) NOT NULL COMMENT '用户密码',
+  `user_type` CHAR(3) NOT NULL COMMENT '用户类型(0:平台用户、1:微信用户、 2:骑手用户、 3:回收中心用户)',
+	`gender` CHAR(3) DEFAULT NULL COMMENT '性别(20:男、21:女)',
+	`attachment_id` VARCHAR(32) DEFAULT NULL COMMENT '附件id(头像)',
+  `nick_name` VARCHAR(255) DEFAULT NULL COMMENT '昵称',
+  `phone` VARCHAR(11) NOT NULL COMMENT '手机号',
+  `is_delete`  CHAR(3) DEFAULT 15 NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
+  `last_visit_time` DATETIME(0) DEFAULT NULL COMMENT '最后登录时间',
+  `create_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='骑手/回收中心用户/平台用户表';
 
+
+-- ----------------------------
+-- 创建 角色表
+-- ----------------------------`
+CREATE TABLE `role` (
+  `id` VARCHAR(32) NOT NULL COMMENT '角色id',
+  `role_name` varchar(20) NOT NULL DEFAULT '' COMMENT '角色名称',
+  `role_code` varchar(40) DEFAULT NULL COMMENT '角色编码',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `is_delete`  CHAR(3) DEFAULT 15 NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='角色表';
+
+
+-- ----------------------------
+-- 创建 用户角色关联表
+-- ----------------------------
+DROP TABLE IF EXISTS `user_role`;
+create table `user_role`(
+  `id` VARCHAR(32) COMMENT '主键id',
+  `user_id` VARCHAR(32) COMMENT '用户id',
+  `role_id` VARCHAR(32) COMMENT '角色id',
+  `is_delete`  CHAR(3) DEFAULT 15 NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色关联表';
+
+
+-- ----------------------------
+-- 创建 权限表
+-- ----------------------------
+CREATE TABLE `menu` (
+  `id` VARCHAR(32) NOT NULL COMMENT '编号',
+  `parent_id` VARCHAR(32) NOT NULL DEFAULT '0' COMMENT '所属上级',
+  `name` varchar(20) NOT NULL DEFAULT '' COMMENT '名称',
+  `type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '类型(28:目录, 29:菜单,30:按钮)',
+  `path` varchar(100) DEFAULT NULL COMMENT '路由地址',
+  `component` varchar(100) DEFAULT NULL COMMENT '组件路径',
+  `perms` varchar(100) DEFAULT NULL COMMENT '权限标识',
+  `icon` varchar(100) DEFAULT NULL COMMENT '图标',
+  `sort_value` int(11) DEFAULT NULL COMMENT '排序',
+  `is_delete`  CHAR(3) DEFAULT 15 NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
+
+-- ----------------------------
+-- 创建 角色权限关联表
+-- ----------------------------
+CREATE TABLE `role_menu` (
+  `id` VARCHAR(32) NOT NULL,
+  `role_id` VARCHAR(32) NOT NULL DEFAULT '0',
+  `menu_id` VARCHAR(32) NOT NULL DEFAULT '0',
+  `is_delete`  CHAR(3) DEFAULT 15 NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
+
+
+-- ----------------------------
+-- 创建 附件表
+-- ----------------------------
+DROP TABLE IF EXISTS `attachment`;
+CREATE TABLE `attachment` (
+  `id` VARCHAR(32) NOT NULL  COMMENT '主键id',
+  `url` VARCHAR(100) NOT NULL COMMENT '访问地址',
+  `create_by_user_id` VARCHAR(32) NOT NULL COMMENT '创建人id',
+  `create_by_user_name` VARCHAR(10) NOT NULL COMMENT '创建人name',
+  `create_by_user_type` CHAR(3) NOT NULL COMMENT '用户类型(0:平台用户、1:微信用户、 2:骑手用户、 3:回收中心用户)',
+  `is_delete`  CHAR(3) DEFAULT 15 NOT NULL COMMENT '是否删除(14:已删除、15:未删除)',
+  `create_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统附件表';
 
 
 -- ----------------------------
@@ -232,8 +253,6 @@ CREATE TABLE `swiper`  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='轮播图表';
 
 
-
-
 -- ----------------------------
 -- 创建 公告栏表
 -- ----------------------------
@@ -250,9 +269,6 @@ CREATE TABLE `notice`  (
   `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公告栏表';
-
-
-
 
 
 -- ----------------------------
@@ -291,8 +307,6 @@ CREATE TABLE `recycle_goods`  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='回收商品表';
 
 
-
-
 -- ----------------------------
 -- 创建 回收商品订单表
 -- ----------------------------
@@ -312,7 +326,6 @@ CREATE TABLE `recycle_order`  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='回收商品订单表';
 
 
-
 -- ----------------------------
 -- 创建 回收商品订单详情表
 -- ----------------------------
@@ -327,9 +340,6 @@ CREATE TABLE `recycle_order_detail`(
   `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='回收商品订单详情表';
-
-
-
 
 
 -- ----------------------------
@@ -383,10 +393,6 @@ CREATE TABLE `integral_order`  (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='积分商品表订单表';
 
 
-
-
-
-
 -- ----------------------------
 -- 创建 账户表
 -- ----------------------------
@@ -400,7 +406,6 @@ CREATE TABLE `account`  (
   `update_time` DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账户表';
-
 
 
 -- ----------------------------

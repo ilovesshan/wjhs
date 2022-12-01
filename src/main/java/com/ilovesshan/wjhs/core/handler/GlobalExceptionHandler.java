@@ -1,9 +1,10 @@
-package com.ilovesshan.wjhs.handler;
+package com.ilovesshan.wjhs.core.handler;
 
-import com.ilovesshan.wjhs.exception.AuthorizationException;
-import com.ilovesshan.wjhs.exception.CustomException;
+import com.ilovesshan.wjhs.core.exception.AuthorizationException;
+import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.utils.R;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +27,7 @@ public class GlobalExceptionHandler {
      * 自定义异常
      */
     @ExceptionHandler(CustomException.class)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public R handleException(CustomException exception) {
         exception.printStackTrace();
@@ -37,6 +39,7 @@ public class GlobalExceptionHandler {
      * 参数不匹配异常
      */
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public R handleMethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
         exception.printStackTrace();
@@ -44,15 +47,15 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 无权访问
+     * 暂无权限访问/操作该资源
      */
-    // @ExceptionHandler(value = {AccessDeniedException.class})
-    // @ResponseStatus(HttpStatus.FORBIDDEN)
-    // @ResponseBody
-    // public R handleMethodArgumentNotValidExceptionHandler(AccessDeniedException exception) {
-    //     exception.printStackTrace();
-    //     return R.builder().code(R.ERROR_CODE_FORBIDDEN).message(R.ERROR_MESSAGE_FORBIDDEN).build();
-    // }
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public R handleMethodArgumentNotValidExceptionHandler(AccessDeniedException exception) {
+        exception.printStackTrace();
+        return R.builder().code(R.ERROR_CODE_FORBIDDEN).message(R.ERROR_MESSAGE_FORBIDDEN).build();
+    }
 
 
     /**

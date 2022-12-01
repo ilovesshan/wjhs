@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ilovesshan.wjhs.mapper.SystemDictMapper">
+
+    <sql id="allColumns">
+        `id`, `dict_code`, `dict_name`, `dict_describe`, `sort`, `create_by`, `create_by_user_id`, `update_by`, `update_by_user_id`, `is_delete`, `create_time`, `update_time`
+    </sql>
+
+    <select id="selectAll" resultType="com.ilovesshan.wjhs.beans.pojo.SystemDict">
+        select <include refid="allColumns" /> from `system_dict`;
+    </select>
+
+</mapper>

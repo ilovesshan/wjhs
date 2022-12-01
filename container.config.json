@@ -1,7 +1,7 @@
 {
   "containerPort": 80,
   "minNum": 1,
-  "maxNum": 5,
+  "maxNum": 10,
   "cpu": 1,
   "mem": 2,
   "policyType": "cpu",
@@ -18,9 +18,8 @@
   ],
   "envParams": {},
   "customLogs": "stdout",
-  "dataBaseName":"wjhs",
-  "executeSQLs":[
-    "CREATE DATABASE IF NOT EXISTS wjhs;",
-    "USE wjhs;"
+  "dataBaseName": "wjhs",
+  "executeSQLs": [
+    "CREATE DATABASE IF NOT EXISTS wjhs;"
   ]
 }

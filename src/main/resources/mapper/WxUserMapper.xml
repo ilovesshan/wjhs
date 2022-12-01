@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ilovesshan.wjhs.mapper.WxUserMapper">
+
+    <sql id="allColumns">
+        `id` , `open_id`, `skey`, `session_key`, `gender`, `avatar_url`, `city`, `province`, `country`, `nick_name`, `is_delete`, `last_visit_time`, `create_time`, `update_time`
+    </sql>
+
+    <select id="findUserByOpenId" resultType="com.ilovesshan.wjhs.beans.pojo.WxUser">
+        select <include refid="allColumns"/> from `wx_user` where open_id = #{openid};
+    </select>
+
+
+    <insert id="insert">
+        insert into `wjhs`.`wx_user`
+            (`id`, `open_id`, `skey`, `session_key`, `gender`, `avatar_url`, `city`, `province`, `country`, `nick_name`, `last_visit_time`)
+        values
+           (#{id}, #{openId}, #{skey}, #{sessionKey}, #{gender}, #{avatarUrl}, #{city}, #{province}, #{country},  #{nickName}, #{lastVisitTime});
+    </insert>
+
+
+    <update id="update">
+        update `wjhs`.`wx_user`
+            <set>
+                <if test="gender != null and gender != ''">
+                    `gender`=#{gender},
+                </if>
+                <if test="avatarUrl != null and avatarUrl != ''">
+                    `avatar_url`=#{avatarUrl},
+                </if>
+                <if test="city != null and city != ''">
+                    `city`=#{city},
+                </if>
+                <if test="province != null and province != ''">
+                    `province`=#{province},
+                </if>
+                <if test="country != null and country != ''">
+                    `country`=#{country},
+                </if>
+                <if test="nickName != null and nickName != ''">
+                    `nick_name`=#{nickName},
+                </if>
+                <if test="lastVisitTime != null">
+                    `last_visit_time`=#{lastVisitTime},
+                </if>
+            </set>
+        where id = #{id}
+    </update>
+
+
+    <select id="findUserById" resultType="com.ilovesshan.wjhs.beans.pojo.WxUser">
+        select <include refid="allColumns"/> from `wx_user` where id = #{openid};
+    </select>
+
+</mapper>

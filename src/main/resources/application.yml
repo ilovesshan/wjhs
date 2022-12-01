@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: ${PORT}
 
 spring:
   application:
@@ -20,6 +20,11 @@ spring:
       username: ${MYSQL_USER_NAME}
       password: ${MySQL_PASSWORD}
 
+  # redis 配置
+  redis:
+    port: ${REDIS_PORT}
+    host: ${REDIS_HOST}
+
   flyway:
     # 是否启用flyway
     enabled: true
@@ -37,3 +42,26 @@ spring:
     validate-on-migrate: true
     # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
     baseline-on-migrate: true
+
+mybatis:
+  # 将包内的映射器接口实现全部注册为映射器
+  type-aliases-package: com.ilovesshan.wjhs.beans
+
+  # 配置mybatis的mapper路径
+  mapper-locations: classpath:mapper/*.xml
+
+  configuration:
+    # 是否开启驼峰命名自动映射，即从经典数据库列名 A_COLUMN 映射到经典 Java 属性名 aColumn。
+    map-underscore-to-camel-case: true
+    # 指定 MyBatis 所用日志的具体实现，未指定时将自动查找
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+# 日志打印级别
+logging:
+  level:
+    wjhsService: debug
+
+  group:
+    wjhsService: com.ilovesshan.wjhs.service
+

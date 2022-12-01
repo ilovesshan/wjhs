@@ -1,4 +1,4 @@
-package com.ilovesshan.wjhs.config;
+package com.ilovesshan.wjhs.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
