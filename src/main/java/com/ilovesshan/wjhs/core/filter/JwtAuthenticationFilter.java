@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authorization = request.getHeader(Constants.HEADER_KEY);
         // TODO: 是否对小程序端用户进行鉴权处理??
         // 不存在token或者是非法token
-        if (!StringUtils.hasText(authorization) || !StringUtils.hasText(Constants.HEADER_VALUE_PREFIX)) {
+        if (!StringUtils.hasText(authorization) || authorization.replace("Bearer", "").length() == 0) {
             filterChain.doFilter(request, response);
             return;
         }
