@@ -21,30 +21,30 @@
 
     <update id="update">
         update `wjhs`.`wx_user`
-        <trim prefix="set" suffixOverrides=",">
-            <if test="gender != null and gender != ''">
-                `gender`=#{gender},
-            </if>
-            <if test="avatarUrl != null and avatarUrl != ''">
-                `avatar_url`=#{avatarUrl},
-            </if>
-            <if test="city != null and city != ''">
-                `city`=#{city},
-            </if>
-            <if test="province != null and province != ''">
-                `province`=#{province},
-            </if>
-            <if test="country != null and country != ''">
-                `country`=#{country},
-            </if>
-            <if test="nickName != null and nickName != ''">
-                `nick_name`=#{nickName},
-            </if>
-            <if test="lastVisitTime != null">
-                `last_visit_time`=#{lastVisitTime},
-            </if>
-        </trim>
-        where id=#{id}
+            <set>
+                <if test="gender != null and gender != ''">
+                    `gender`=#{gender},
+                </if>
+                <if test="avatarUrl != null and avatarUrl != ''">
+                    `avatar_url`=#{avatarUrl},
+                </if>
+                <if test="city != null and city != ''">
+                    `city`=#{city},
+                </if>
+                <if test="province != null and province != ''">
+                    `province`=#{province},
+                </if>
+                <if test="country != null and country != ''">
+                    `country`=#{country},
+                </if>
+                <if test="nickName != null and nickName != ''">
+                    `nick_name`=#{nickName},
+                </if>
+                <if test="lastVisitTime != null">
+                    `last_visit_time`=#{lastVisitTime},
+                </if>
+            </set>
+        where id = #{id}
     </update>
 
 

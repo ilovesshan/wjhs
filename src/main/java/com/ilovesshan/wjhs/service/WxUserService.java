@@ -14,7 +14,7 @@ public interface WxUserService {
 
     boolean insert(WxUser wxUser);
 
-    boolean update(WxUser selectedUser);
+    boolean update(WxUser wxUser);
 
     WxUser findUserById(String id);
 }

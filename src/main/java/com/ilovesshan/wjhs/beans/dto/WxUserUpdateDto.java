@@ -16,11 +16,10 @@ import javax.validation.constraints.NotNull;
 public class WxUserUpdateDto {
     @NotNull
     private String id;
-    private String username;
-    private String password;
-    private String userType;
-    private String gender;
-    private String attachmentId;
     private String nickName;
-    private String phone;
+    private String avatarUrl;
+    private String gender;
+    private String city;
+    private String province;
+    private String country;
 }
