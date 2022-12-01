@@ -47,9 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/doc.html", "/webjars/**", "/img.icons/**", "/swagger-resources/**", "/v2/api-docs").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers("/upload/**").permitAll()
                 .antMatchers("/wx/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers(HttpMethod.GET, "/upload/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/systemDict").permitAll()
                 .anyRequest().authenticated();
 
         http
