@@ -1,10 +1,10 @@
 spring:
   application:
-    name: imusic
+    name: wjhs
 
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:wjhs;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;
+    url: jdbc:h2:mem:wjhs # MODE=MySQL;LOCK_MODE=0;DB_CLOSE_ON_EXIT=FALSE;database_to_upper=true;NON_KEYWORDS=USER,account,value,key,month
     username: sa
     password:
 
