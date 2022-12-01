@@ -18,8 +18,8 @@
   ],
   "envParams": {},
   "customLogs": "stdout",
-  "dataBaseName": "imusic",
+  "dataBaseName": "wjhs",
   "executeSQLs": [
-    "CREATE DATABASE IF NOT EXISTS imusic;"
+    "CREATE DATABASE IF NOT EXISTS wjhs;"
   ]
 }
