@@ -1,19 +1,18 @@
 package com.ilovesshan.wjhs.service.impl;
 
 import com.ilovesshan.wjhs.beans.dto.UserAuthDto;
-import com.ilovesshan.wjhs.beans.pojo.AuthUser;
+import com.ilovesshan.wjhs.beans.pojo.User;
 import com.ilovesshan.wjhs.contants.Constants;
 import com.ilovesshan.wjhs.core.base.UserCache;
 import com.ilovesshan.wjhs.core.config.RedisCache;
-import com.ilovesshan.wjhs.core.exception.AuthorizationException;
+import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.service.AuthService;
+import com.ilovesshan.wjhs.service.UserService;
+import com.ilovesshan.wjhs.utils.AesUtils;
 import com.ilovesshan.wjhs.utils.JwtUtil;
 import com.ilovesshan.wjhs.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -34,28 +33,26 @@ public class AuthServiceImpl implements AuthService {
     private RedisCache redisCache;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private UserService userService;
 
     @Override
     public String auth(UserAuthDto userAuthDto) {
-        // 封装一个Authentication对象 交给authenticationManager去进去认证
-        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(userAuthDto.getUsername(), userAuthDto.getPassword());
-        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-
-        // 如果为空 表示认证失败了
-        if (Objects.isNull(authenticate)) {
-            throw new AuthorizationException(R.ERROR_USER_NAME_OR_PASSWORD);
+        User finedUser = userService.findUserByUsername(userAuthDto.getUsername());
+        // 用户不存在
+        if (Objects.isNull(finedUser)) {
+            throw new CustomException(R.ERROR_USER_NOT_FOUND);
         }
 
-        // 取出用户信息
-        AuthUser principal = (AuthUser) authenticate.getPrincipal();
+        // 用户名或者密码错误
+        if (!userAuthDto.getPassword().equals(AesUtils.decrypt(finedUser.getPassword()))) {
+            throw new CustomException(R.ERROR_USER_NAME_OR_PASSWORD);
+        }
 
         // 将用户登录信息存在redis中
-        String userId = principal.getUser().getId();
-        redisCache.set(Constants.REDIS_USER_PREFIX + userId, principal, Constants.JWT_EXPIRATION);
+        redisCache.set(Constants.REDIS_USER_PREFIX + finedUser.getId(), finedUser, Constants.JWT_EXPIRATION);
 
-        // 校验通过 返回Token
-        return JwtUtil.generatorToken(userId, principal.getUsername());
+        //  返回Token
+        return JwtUtil.generatorToken(finedUser.getId(), finedUser.getUsername());
     }
 
     @Override

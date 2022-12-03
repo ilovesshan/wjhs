@@ -23,14 +23,13 @@ import java.util.HashMap;
 
 @Api(tags = "授权模块")
 @RestController
-@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
     @ApiOperation("用户授权")
-    @PostMapping
+    @PostMapping("/auth")
     public R auth(@Validated @RequestBody UserAuthDto userAuthDto) {
         String token = authService.auth(userAuthDto);
         HashMap<String, String> data = new HashMap<>();
@@ -41,7 +40,7 @@ public class AuthController {
     }
 
     @ApiOperation("用户注销")
-    @DeleteMapping
+    @DeleteMapping("/logout")
     public R logout() {
         authService.logout();
         return R.success(R.SUCCESS_MESSAGE_LOGOUT);

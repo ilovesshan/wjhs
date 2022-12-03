@@ -33,7 +33,7 @@ public class WxAuthController {
 
     @ApiOperation("授权")
     @PostMapping
-    public R auth(@RequestParam(value = "code", required = false) String code) {
+    public R auth(@RequestParam(value = "code") String code) {
         WxUser wxUser = wxAuthService.auth(code);
         return R.success(R.SUCCESS_MESSAGE_LOGIN, wxUserConverter.po2AuthVo(wxUser));
     }

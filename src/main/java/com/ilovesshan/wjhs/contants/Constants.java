@@ -20,7 +20,13 @@ public class Constants {
     // 请求头值(前缀)
     public static final String HEADER_VALUE_PREFIX = "Bearer ";
 
+    // 小程序请求头值(前缀)
+    public static final String HEADER_WX_VALUE_PREFIX = "Openid ";
+
     // redis中缓存用户信息(前缀)
     public static final String REDIS_USER_PREFIX = "user:";
+
+    // redis中缓存小程序用户信息(前缀)
+    public static final String REDIS_WX__USER_PREFIX = "wx:";
 
 }

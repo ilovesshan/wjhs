@@ -1,11 +1,10 @@
 package com.ilovesshan.wjhs.core.handler;
 
+import com.ilovesshan.wjhs.core.exception.AccessDeniedException;
 import com.ilovesshan.wjhs.core.exception.AuthorizationException;
 import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.utils.R;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -70,16 +69,6 @@ public class GlobalExceptionHandler {
         return R.builder().code(R.ERROR_CODE_AUTHORIZATION).message(exception.getMessage()).build();
     }
 
-
-    /**
-     * BadCredentialsException 鉴权(密码错误)异常
-     */
-    @ExceptionHandler(BadCredentialsException.class)
-    @ResponseBody
-    public R handleBadCredentialsException(BadCredentialsException exception) {
-        exception.printStackTrace();
-        return R.fail(exception.getMessage(), null);
-    }
 
     /**
      * 其他异常
