@@ -68,8 +68,8 @@ public class SwiperController {
 
     @ApiOperation("删除轮播图")
     @DeleteMapping("/{id}")
-    public R delete(@PathVariable String id){
-        boolean isSuccess =  swiperService.delete(id);
+    public R deleteById(@PathVariable String id){
+        boolean isSuccess =  swiperService.deleteById(id);
         return isSuccess ? R.success(R.SUCCESS_MESSAGE_DELETE) : R.fail(R.ERROR_MESSAGE_DELETE);
     }
 }

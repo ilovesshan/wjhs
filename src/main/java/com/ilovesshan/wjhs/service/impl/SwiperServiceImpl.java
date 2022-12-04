@@ -54,7 +54,7 @@ public class SwiperServiceImpl implements SwiperService {
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean deleteById(String id) {
         Swiper finedSwiper = swiperMapper.selectById(id);
         if (Objects.isNull(finedSwiper)) {
             throw new CustomException(R.ERROR_RESOURCES_NOTFOUND);

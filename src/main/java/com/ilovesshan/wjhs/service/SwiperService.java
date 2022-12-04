@@ -20,5 +20,5 @@ public interface SwiperService {
 
     boolean update(SwiperUpdateDto swiperUpdateDto);
 
-    boolean delete(String id);
+    boolean deleteById(String id);
 }
