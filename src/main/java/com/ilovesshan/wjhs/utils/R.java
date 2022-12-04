@@ -63,9 +63,10 @@ public class R implements Serializable {
     public static final String ERROR_USER_ALREADY_EXIST = "用户已经存在";
 
 
+    public static final String ERROR_RESOURCES_NOTFOUND = "资源不存在";
     public static final String SUCCESS_ATTACHMENT_UPLOAD = "附件上传成功";
-    public static final String ERROR_ATTACHMENT_UPLOAD= "附件上传失败";
-    public static final String ERROR_ATTACHMENT_NOTFOUND= "附件不存在";
+    public static final String ERROR_ATTACHMENT_UPLOAD = "附件上传失败";
+    public static final String ERROR_ATTACHMENT_NOTFOUND = "附件不存在";
 
 
     private Integer code;
@@ -90,8 +91,6 @@ public class R implements Serializable {
     }
 
 
-
-
     public static R fail() {
         return R.builder().code(R.ERROR_CODE_CLIENT).message(R.ERROR_MESSAGE).build();
     }
@@ -107,8 +106,6 @@ public class R implements Serializable {
     public static R fail(String message, Object data) {
         return R.builder().code(R.ERROR_CODE_CLIENT).message(message).data(data).build();
     }
-
-
 
 
     public static R error() {
