@@ -46,8 +46,9 @@ public class SecurityHandlerInterceptor implements HandlerInterceptor {
                 throw new AuthorizationException(R.ERROR_INSUFFICIENT_AUTHENTICATION);
             }
             // 将当前用户ID和用户名称存在UserCache中 方便在任意地方获取
-            UserCache.set("wxUserId", finedUser.getId());
-            UserCache.set("wxUsername", finedUser.getNickName());
+            UserCache.set("userId", finedUser.getId());
+            UserCache.set("username", finedUser.getNickName());
+            UserCache.set("userType", "1");
             return true;
         } else {
             String userId = JwtUtil.getUserId(authorization.replace(Constants.HEADER_VALUE_PREFIX, ""));
@@ -59,6 +60,7 @@ public class SecurityHandlerInterceptor implements HandlerInterceptor {
             // 将当前用户ID和用户名称存在UserCache中 方便在任意地方获取
             UserCache.set("userId", userId);
             UserCache.set("username", finedUser.getUsername());
+            UserCache.set("userType", finedUser.getUserType());
             return true;
         }
     }
