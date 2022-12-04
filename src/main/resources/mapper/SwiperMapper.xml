@@ -57,10 +57,7 @@
                 `detail` = #{detail},
             </if>
             <if test="link != null and link != '' ">
-                `link` = #{link},
-            </if>
-            <if test="isDelete != null and isDelete != '' ">
-                `is_delete` = #{isDelete}
+                `link` = #{link}
             </if>
         where (`id` = #{id});
     </update>
