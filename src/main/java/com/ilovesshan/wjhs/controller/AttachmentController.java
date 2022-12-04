@@ -2,6 +2,7 @@ package com.ilovesshan.wjhs.controller;
 
 import com.ilovesshan.wjhs.beans.converter.AttachmentConverter;
 import com.ilovesshan.wjhs.beans.pojo.Attachment;
+import com.ilovesshan.wjhs.core.annotation.Log;
 import com.ilovesshan.wjhs.service.AttachmentService;
 import com.ilovesshan.wjhs.utils.R;
 import io.swagger.annotations.Api;
@@ -31,6 +32,7 @@ public class AttachmentController {
 
     @ApiOperation("上传附件")
     @PostMapping
+    @Log(businessModule = "附件模块", businessType = "POST", businessDescribe = "上传附件")
     public R upload(@RequestParam("file") MultipartFile file) {
         String attachmentId = attachmentService.upload(file);
         Attachment attachment = attachmentService.selectById(attachmentId);
@@ -46,7 +48,8 @@ public class AttachmentController {
     }
 
 
-    @ApiOperation("删除附件")
+    @Log(businessModule = "附件模块", businessType = "DELETE", businessDescribe = "根据ID删除附件")
+    @ApiOperation("根据ID删除附件")
     @DeleteMapping("/{id}")
     public R deleteById(@PathVariable String id) {
         attachmentService.deleteById(id);
