@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ilovesshan.wjhs.mapper.AttachmentMapper">
+
+    <sql id="allColumns">
+        `id`, `url`, `create_by_user_id`, `create_by_user_name`, `create_by_user_type`, `is_delete`, `create_time`, `update_time`
+    </sql>
+
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`attachment` (`id`, `url`, `create_by_user_id`, `create_by_user_name`, `create_by_user_type`)
+        values
+            (#{id}, #{url}, #{createByUserId}, #{createByUserName}, #{createByUserType});
+    </insert>
+
+
+    <delete id="deleteById">
+        update  `wjhs`.`attachment` set is_delete = '14' where id = #{id};
+    </delete>
+
+
+    <select id="selectById" resultType="com.ilovesshan.wjhs.beans.pojo.Attachment">
+        select <include refid="allColumns" /> from `wjhs`.`attachment` where id = #{id} and is_delete = '15';
+    </select>
+
+</mapper>

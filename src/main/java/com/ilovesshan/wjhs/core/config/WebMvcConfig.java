@@ -1,5 +1,6 @@
 package com.ilovesshan.wjhs.core.config;
 
+import com.ilovesshan.wjhs.contants.Constants;
 import com.ilovesshan.wjhs.core.inceptor.SecurityHandlerInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/preview/**").addResourceLocations("file:D:/www/wjhs/upload/");
+        // 区分当前运行的系统环境
+        String os = System.getProperty("os.name").toLowerCase();
+        registry.addResourceHandler("/preview/**").addResourceLocations("file:" + (os.startsWith("win") ? Constants.ATTACHMENT_UPLOAD_WINDOWS_DEST : Constants.ATTACHMENT_UPLOAD_LINUX_DEST));
     }
 
     @Override

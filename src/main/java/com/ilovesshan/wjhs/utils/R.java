@@ -63,6 +63,11 @@ public class R implements Serializable {
     public static final String ERROR_USER_ALREADY_EXIST = "用户已经存在";
 
 
+    public static final String SUCCESS_ATTACHMENT_UPLOAD = "附件上传成功";
+    public static final String ERROR_ATTACHMENT_UPLOAD= "附件上传失败";
+    public static final String ERROR_ATTACHMENT_NOTFOUND= "附件不存在";
+
+
     private Integer code;
     private String message;
     private Object data;

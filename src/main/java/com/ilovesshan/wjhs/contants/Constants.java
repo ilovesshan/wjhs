@@ -29,4 +29,13 @@ public class Constants {
     // redis中缓存小程序用户信息(前缀)
     public static final String REDIS_WX__USER_PREFIX = "wx:";
 
+    // 附件上传地址(windows)
+    public static final String ATTACHMENT_UPLOAD_WINDOWS_DEST = "D:/www/wjhs/upload/";
+
+    // 附件上传地址(linux)
+    public static final String ATTACHMENT_UPLOAD_LINUX_DEST = "/home/www/wjhs/upload/";
+
+    // 文件预览前缀
+    public static final String FILE_PREVIEW_PREFIX = "/preview/";
+
 }

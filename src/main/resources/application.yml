@@ -43,6 +43,15 @@ spring:
     # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
     baseline-on-migrate: true
 
+  # 文件上传配置
+  servlet:
+    multipart:
+      # 单个文件大小限制
+      max-file-size: 5MB
+      # 一次请求中所有上传文件总大小限制
+      max-request-size: 20MB
+
+
 mybatis:
   # 将包内的映射器接口实现全部注册为映射器
   type-aliases-package: com.ilovesshan.wjhs.beans
@@ -64,4 +73,5 @@ logging:
 
   group:
     wjhsService: com.ilovesshan.wjhs.service
+
 
