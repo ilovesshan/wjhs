@@ -17,6 +17,4 @@ public class SwiperUpdateDto {
   private String subTitle;
   private String detail;
   private String link;
-  @NotEmpty(message = "删除状态不能为空")
-  private String isDelete;
 }
