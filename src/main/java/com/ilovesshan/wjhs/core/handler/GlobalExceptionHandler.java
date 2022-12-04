@@ -1,10 +1,10 @@
 package com.ilovesshan.wjhs.core.handler;
 
+import com.ilovesshan.wjhs.core.exception.AccessDeniedException;
 import com.ilovesshan.wjhs.core.exception.AuthorizationException;
 import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.utils.R;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

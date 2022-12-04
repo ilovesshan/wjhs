@@ -2,6 +2,8 @@ package com.ilovesshan.wjhs.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ilovesshan.wjhs.beans.pojo.WxUser;
+import com.ilovesshan.wjhs.contants.Constants;
+import com.ilovesshan.wjhs.core.config.RedisCache;
 import com.ilovesshan.wjhs.core.exception.AuthorizationException;
 import com.ilovesshan.wjhs.service.WxAuthService;
 import com.ilovesshan.wjhs.service.WxUserService;
@@ -28,6 +30,9 @@ import java.util.Objects;
 public class WxAuthServiceImpl implements WxAuthService {
 
     @Autowired
+    private RedisCache redisCache;
+
+    @Autowired
     private WxUserService wxUserService;
 
     @Override
@@ -52,11 +57,15 @@ public class WxAuthServiceImpl implements WxAuthService {
             wxUser.setSkey(UuidUtil.generator());
             wxUser.setLastVisitTime(new Date());
             wxUserService.insert(wxUser);
+            // 将用户登录信息存在redis中
+            redisCache.set(Constants.REDIS_WX__USER_PREFIX + wxUser.getOpenId(), wxUser, Constants.JWT_EXPIRATION);
             return wxUser;
         } else {
             // 更新最后登录时间
             selectedUser.setLastVisitTime(new Date());
             wxUserService.update(selectedUser);
+            // 将用户登录信息存在redis中
+            redisCache.set(Constants.REDIS_WX__USER_PREFIX + selectedUser.getOpenId(), selectedUser, Constants.JWT_EXPIRATION);
             return selectedUser;
         }
     }

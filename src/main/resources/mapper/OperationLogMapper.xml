@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ilovesshan.wjhs.mapper.OperationLogMapper">
+
+    <sql id="allColumns">
+        `id`, `business_module`, `business_type`, `business_describe`, `api_method`, `request_method`, `user_id`, `user_name`, `user_type`, `url`, `ip`, `status`, `is_delete`, `error_message`, `operation_time`
+    </sql>
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`operation_log` (`id`, `business_module`, `business_type`, `business_describe`, `api_method`, `request_method`, `user_id`, `user_name`, `user_type`, `url`, `ip`, `status`, `error_message`, `operation_time`)
+        values
+            (#{id}, #{businessModule}, #{businessType}, #{businessDescribe}, #{apiMethod}, #{requestMethod}, #{userId}, #{userName}, #{userType}, #{url}, #{ip}, #{status}, #{errorMessage}, #{operationTime});
+    </insert>
+
+</mapper>
