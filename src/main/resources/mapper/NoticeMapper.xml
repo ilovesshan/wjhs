@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ilovesshan.wjhs.mapper.NoticeMapper">
+
+    <sql id="allColumns">
+        `id`, `type`, `title`, `sub_title`, `detail`, `link`, `is_delete`, `create_time`, `update_time`
+    </sql>
+
+    <select id="selectByType" resultType="com.ilovesshan.wjhs.beans.pojo.Notice">
+        select  <include refid="allColumns" /> from  `wjhs`.`notice` where type = #{type} and is_delete = '15';
+    </select>
+
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`notice` (`id`, `type`, `title`, `sub_title`, `detail`, `link`)
+        values
+            (#{id}, #{type}, #{title}, #{subTitle}, #{detail}, #{link});
+    </insert>
+
+
+    <update id="update">
+        update
+            `wjhs`.`notice`
+        set
+            <if test="type != null and type != '' ">
+                `type` = #{type},
+            </if>
+            <if test="title != null and title != '' ">
+                `title` = #{title},
+            </if>
+            <if test="subTitle != null and subTitle != '' ">
+                `sub_title` = #{subTitle},
+            </if>
+            <if test="detail != null and detail != '' ">
+                `detail` = #{detail},
+            </if>
+            <if test="link != null and link != '' ">
+                `link` = #{link}
+            </if>
+        where (`id` = #{id});
+    </update>
+
+
+    <delete id="deleteById">
+        update `wjhs`.`notice` set is_delete = '14' where id = #{id};
+    </delete>
+
+
+    <select id="selectById" resultType="com.ilovesshan.wjhs.beans.pojo.Notice">
+        select <include refid="allColumns" /> from  `wjhs`.`notice` where id = #{id} and is_delete = '15';
+    </select>
+
+</mapper>
