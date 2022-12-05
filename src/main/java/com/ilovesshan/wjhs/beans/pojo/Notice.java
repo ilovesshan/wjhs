@@ -15,6 +15,4 @@ public class Notice {
   private String isDelete;
   private Date createTime;
   private Date updateTime;
-  private Attachment attachment;
-
 }

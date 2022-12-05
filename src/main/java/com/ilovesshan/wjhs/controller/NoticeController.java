@@ -1,6 +1,5 @@
 package com.ilovesshan.wjhs.controller;
 
-import com.ilovesshan.wjhs.beans.converter.AttachmentConverter;
 import com.ilovesshan.wjhs.beans.converter.NoticeConverter;
 import com.ilovesshan.wjhs.beans.dto.NoticeCreateDto;
 import com.ilovesshan.wjhs.beans.dto.NoticeUpdateDto;
@@ -36,18 +35,11 @@ public class NoticeController {
     @Autowired
     private NoticeConverter noticeConverter;
 
-    @Autowired
-    private AttachmentConverter attachmentConverter;
-
     @GetMapping
     @ApiOperation("查询公告")
     public R selectByType(@RequestParam String type) {
         List<Notice> notices = noticeService.selectByType(type);
-        List<NoticeVo> noticesVos = notices.stream().map(notice -> {
-            NoticeVo noticeVo = noticeConverter.po2vo(notice);
-            noticeVo.setAttachment(attachmentConverter.po2vo(notice.getAttachment()));
-            return noticeVo;
-        }).collect(Collectors.toList());
+        List<NoticeVo> noticesVos = notices.stream().map(noticeConverter::po2vo).collect(Collectors.toList());
         return R.success(R.SUCCESS_MESSAGE_SELECT, noticesVos);
     }
 
