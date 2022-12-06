@@ -22,19 +22,31 @@
         </association>
     </resultMap>
 
-    <select id="selectByType" resultMap="swiperMap">
+    <select id="selectByConditions" resultMap="swiperMap">
         select
             s.id, s.type, s.attachment_id, s.title, s.detail, s.link, s.sub_title, s.is_delete, s.create_time, s.update_time,
             a.id a_id , a.url, a.create_by_user_id, a.create_by_user_name, a.create_by_user_type, a.is_delete, a.create_time, a.update_time
         from
-            swiper s left join attachment a on  s.attachment_id = a.id
-        where
-            s.type = #{type} and s.is_delete = 15 and a.is_delete = 15;
+            swiper s left join attachment a on s.attachment_id = a.id
+        <where>
+            <if test="title !=null and title != '' ">
+                (s.title like concat('%',#{title},'%') or s.sub_title like concat('%',#{title},'%') or s.detail like concat('%',#{title},'%'))
+            </if>
+            <if test="beginTime !=null and endTime !=null">
+                and (s.create_time between #{beginTime} and #{endTime})
+            </if>
+            and s.type = #{type} and s.is_delete = '15' and a.is_delete = '15';
+        </where>
     </select>
 
-
-    <select id="selectById" resultType="com.ilovesshan.wjhs.beans.pojo.Swiper">
-        select  <include refid="allColumns" /> from  `wjhs`.`swiper` where id = #{id} and is_delete = '15';
+    <select id="selectById" resultMap="swiperMap">
+        select
+            s.id, s.type, s.attachment_id, s.title, s.detail, s.link, s.sub_title, s.is_delete, s.create_time, s.update_time,
+            a.id a_id , a.url, a.create_by_user_id, a.create_by_user_name, a.create_by_user_type, a.is_delete, a.create_time, a.update_time
+        from
+            swiper s left join attachment a on s.attachment_id = a.id
+        where
+            s.id = #{id} and s.is_delete = '15' and a.is_delete = '15';
     </select>
 
     <update id="update">
