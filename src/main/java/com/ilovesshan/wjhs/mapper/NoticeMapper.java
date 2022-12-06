@@ -1,5 +1,6 @@
 package com.ilovesshan.wjhs.mapper;
 
+import com.ilovesshan.wjhs.beans.dto.NoticeSelectDto;
 import com.ilovesshan.wjhs.beans.pojo.Notice;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Mapper
 public interface NoticeMapper {
-    List<Notice> selectByType(String type);
+    List<Notice> selectByConditions(NoticeSelectDto noticeSelectDto);
 
     int insert(Notice notice);
 

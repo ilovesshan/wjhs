@@ -2,6 +2,7 @@ package com.ilovesshan.wjhs.service.impl;
 
 import com.ilovesshan.wjhs.beans.converter.NoticeConverter;
 import com.ilovesshan.wjhs.beans.dto.NoticeCreateDto;
+import com.ilovesshan.wjhs.beans.dto.NoticeSelectDto;
 import com.ilovesshan.wjhs.beans.dto.NoticeUpdateDto;
 import com.ilovesshan.wjhs.beans.pojo.Notice;
 import com.ilovesshan.wjhs.core.exception.CustomException;
@@ -34,8 +35,8 @@ public class NoticeServiceImpl implements NoticeService {
 
 
     @Override
-    public List<Notice> selectByType(String type) {
-        return noticeMapper.selectByType(type);
+    public List<Notice> selectByConditions(NoticeSelectDto noticeSelectDto) {
+        return noticeMapper.selectByConditions(noticeSelectDto);
     }
 
     @Override
@@ -63,5 +64,10 @@ public class NoticeServiceImpl implements NoticeService {
             throw new CustomException(R.ERROR_RESOURCES_NOTFOUND);
         }
         return noticeMapper.deleteById(id) > 0;
+    }
+
+    @Override
+    public Notice selectById(String id) {
+        return noticeMapper.selectById(id);
     }
 }

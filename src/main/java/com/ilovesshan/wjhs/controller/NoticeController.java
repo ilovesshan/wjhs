@@ -2,6 +2,7 @@ package com.ilovesshan.wjhs.controller;
 
 import com.ilovesshan.wjhs.beans.converter.NoticeConverter;
 import com.ilovesshan.wjhs.beans.dto.NoticeCreateDto;
+import com.ilovesshan.wjhs.beans.dto.NoticeSelectDto;
 import com.ilovesshan.wjhs.beans.dto.NoticeUpdateDto;
 import com.ilovesshan.wjhs.beans.pojo.Notice;
 import com.ilovesshan.wjhs.beans.vo.NoticeVo;
@@ -35,10 +36,18 @@ public class NoticeController {
     @Autowired
     private NoticeConverter noticeConverter;
 
+    @GetMapping("/{id}")
+    @ApiOperation("根据ID查询公告")
+    public R selectById(@PathVariable String id) {
+        Notice notice = noticeService.selectById(id);
+        return R.success(R.SUCCESS_MESSAGE_SELECT, noticeConverter.po2vo(notice));
+    }
+
+
     @GetMapping
     @ApiOperation("查询公告")
-    public R selectByType(@RequestParam String type) {
-        List<Notice> notices = noticeService.selectByType(type);
+    public R selectByConditions(@Validated NoticeSelectDto noticeSelectDto) {
+        List<Notice> notices = noticeService.selectByConditions(noticeSelectDto);
         List<NoticeVo> noticesVos = notices.stream().map(noticeConverter::po2vo).collect(Collectors.toList());
         return R.success(R.SUCCESS_MESSAGE_SELECT, noticesVos);
     }
