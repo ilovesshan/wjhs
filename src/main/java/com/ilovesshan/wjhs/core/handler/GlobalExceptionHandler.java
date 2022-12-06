@@ -5,6 +5,7 @@ import com.ilovesshan.wjhs.core.exception.AuthorizationException;
 import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.utils.R;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,6 +46,18 @@ public class GlobalExceptionHandler {
         exception.printStackTrace();
         return R.fail(exception.getAllErrors().get(0).getDefaultMessage());
     }
+
+    /**
+     * 参数不匹配异常
+     */
+    @ExceptionHandler(value = {BindException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public R BindExceptionHandler(BindException exception) {
+        exception.printStackTrace();
+        return R.fail(exception.getAllErrors().get(0).getDefaultMessage());
+    }
+
 
     /**
      * 暂无权限访问/操作该资源
