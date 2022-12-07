@@ -52,7 +52,7 @@
     <update id="update">
         update
             `wjhs`.`swiper`
-        set
+        <set>
             <if test="type != null and type != '' ">
                 `type` = #{type},
             </if>
@@ -69,8 +69,9 @@
                 `detail` = #{detail},
             </if>
             <if test="link != null and link != '' ">
-                `link` = #{link}
+                `link` = #{link},
             </if>
+        </set>
         where (`id` = #{id});
     </update>
 
