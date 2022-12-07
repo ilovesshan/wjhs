@@ -1,6 +1,7 @@
 package com.ilovesshan.wjhs.utils;
 
 import com.ilovesshan.wjhs.contants.Constants;
+import com.ilovesshan.wjhs.core.exception.AuthorizationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -30,7 +31,7 @@ public class JwtUtil {
             claims = Jwts.parser().setSigningKey(Constants.JWT_KEY.getBytes()).parseClaimsJws(token).getBody();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new AuthorizationException(e.getMessage());
         }
         return claims;
     }

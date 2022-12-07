@@ -13,7 +13,6 @@ public class NoticeVo {
   private String subTitle;
   private String detail;
   private String link;
-  private AttachmentVo attachment;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date createTime;
 }

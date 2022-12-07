@@ -2,6 +2,7 @@ package com.ilovesshan.wjhs.service.impl;
 
 import com.ilovesshan.wjhs.beans.converter.SwiperConverter;
 import com.ilovesshan.wjhs.beans.dto.SwiperCreateDto;
+import com.ilovesshan.wjhs.beans.dto.SwiperSelectDto;
 import com.ilovesshan.wjhs.beans.dto.SwiperUpdateDto;
 import com.ilovesshan.wjhs.beans.pojo.Swiper;
 import com.ilovesshan.wjhs.core.exception.CustomException;
@@ -40,8 +41,8 @@ public class SwiperServiceImpl implements SwiperService {
     }
 
     @Override
-    public List<Swiper> selectByType(String type) {
-        return swiperMapper.selectByType(type);
+    public List<Swiper> selectByConditions(SwiperSelectDto swiperSelectDto) {
+        return swiperMapper.selectByConditions(swiperSelectDto);
     }
 
     @Override
@@ -60,5 +61,10 @@ public class SwiperServiceImpl implements SwiperService {
             throw new CustomException(R.ERROR_RESOURCES_NOTFOUND);
         }
         return swiperMapper.delete(id) > 0;
+    }
+
+    @Override
+    public Swiper selectById(String id) {
+        return swiperMapper.selectById(id);
     }
 }

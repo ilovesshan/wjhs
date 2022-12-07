@@ -1,5 +1,6 @@
 package com.ilovesshan.wjhs.mapper;
 
+import com.ilovesshan.wjhs.beans.dto.SwiperSelectDto;
 import com.ilovesshan.wjhs.beans.pojo.Swiper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,7 +21,7 @@ public interface SwiperMapper {
 
     int insert(Swiper dto2po);
 
-    List<Swiper> selectByType(String type);
+    List<Swiper> selectByConditions(SwiperSelectDto swiperSelectDto);
 
     int update(Swiper dto2po);
 

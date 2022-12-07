@@ -1,8 +1,8 @@
 package com.ilovesshan.wjhs.controller;
 
-import com.ilovesshan.wjhs.beans.converter.AttachmentConverter;
 import com.ilovesshan.wjhs.beans.converter.NoticeConverter;
 import com.ilovesshan.wjhs.beans.dto.NoticeCreateDto;
+import com.ilovesshan.wjhs.beans.dto.NoticeSelectDto;
 import com.ilovesshan.wjhs.beans.dto.NoticeUpdateDto;
 import com.ilovesshan.wjhs.beans.pojo.Notice;
 import com.ilovesshan.wjhs.beans.vo.NoticeVo;
@@ -36,18 +36,19 @@ public class NoticeController {
     @Autowired
     private NoticeConverter noticeConverter;
 
-    @Autowired
-    private AttachmentConverter attachmentConverter;
+    @GetMapping("/{id}")
+    @ApiOperation("根据ID查询公告")
+    public R selectById(@PathVariable String id) {
+        Notice notice = noticeService.selectById(id);
+        return R.success(R.SUCCESS_MESSAGE_SELECT, noticeConverter.po2vo(notice));
+    }
+
 
     @GetMapping
     @ApiOperation("查询公告")
-    public R selectByType(@RequestParam String type) {
-        List<Notice> notices = noticeService.selectByType(type);
-        List<NoticeVo> noticesVos = notices.stream().map(notice -> {
-            NoticeVo noticeVo = noticeConverter.po2vo(notice);
-            noticeVo.setAttachment(attachmentConverter.po2vo(notice.getAttachment()));
-            return noticeVo;
-        }).collect(Collectors.toList());
+    public R selectByConditions(@Validated NoticeSelectDto noticeSelectDto) {
+        List<Notice> notices = noticeService.selectByConditions(noticeSelectDto);
+        List<NoticeVo> noticesVos = notices.stream().map(noticeConverter::po2vo).collect(Collectors.toList());
         return R.success(R.SUCCESS_MESSAGE_SELECT, noticesVos);
     }
 
@@ -69,7 +70,7 @@ public class NoticeController {
 
 
     @DeleteMapping("/{id}")
-    @ApiOperation("更新公告")
+    @ApiOperation("根据ID查询公告")
     public R deleteById(@PathVariable String id) {
         boolean isSuccess = noticeService.deleteById(id);
         return isSuccess ? R.success(R.SUCCESS_MESSAGE_DELETE) : R.fail(R.ERROR_MESSAGE_DELETE);

@@ -6,8 +6,22 @@
         `id`, `type`, `title`, `sub_title`, `detail`, `link`, `is_delete`, `create_time`, `update_time`
     </sql>
 
-    <select id="selectByType" resultType="com.ilovesshan.wjhs.beans.pojo.Notice">
-        select  <include refid="allColumns" /> from  `wjhs`.`notice` where type = #{type} and is_delete = '15';
+    <select id="selectByConditions" resultType="com.ilovesshan.wjhs.beans.pojo.Notice">
+        select
+            <include refid="allColumns" />
+        from  `wjhs`.`notice`
+        <where>
+            <if test="title !=null and title != '' ">
+                title like concat('%',#{title},'%') or sub_title like concat('%',#{title},'%')
+            </if>
+            <if test="detail !=null and detail != '' ">
+                and detail like concat('%',#{detail},'%')
+            </if>
+            <if test="beginTime !=null and endTime !=null">
+                and (create_time between #{beginTime} and #{endTime})
+            </if>
+            and `type` = #{type} and is_delete = '15'
+        </where>
     </select>
 
 

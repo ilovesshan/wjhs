@@ -1,6 +1,7 @@
 package com.ilovesshan.wjhs.service;
 
 import com.ilovesshan.wjhs.beans.dto.SwiperCreateDto;
+import com.ilovesshan.wjhs.beans.dto.SwiperSelectDto;
 import com.ilovesshan.wjhs.beans.dto.SwiperUpdateDto;
 import com.ilovesshan.wjhs.beans.pojo.Swiper;
 
@@ -16,9 +17,11 @@ import java.util.List;
 public interface SwiperService {
     boolean create(SwiperCreateDto swiperCreateDto);
 
-    List<Swiper> selectByType(String type);
+    List<Swiper> selectByConditions(SwiperSelectDto swiperSelectDto);
 
     boolean update(SwiperUpdateDto swiperUpdateDto);
 
     boolean deleteById(String id);
+
+    Swiper selectById(String id);
 }

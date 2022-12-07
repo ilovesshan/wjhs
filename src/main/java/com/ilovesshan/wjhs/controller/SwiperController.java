@@ -3,6 +3,7 @@ package com.ilovesshan.wjhs.controller;
 import com.ilovesshan.wjhs.beans.converter.AttachmentConverter;
 import com.ilovesshan.wjhs.beans.converter.SwiperConverter;
 import com.ilovesshan.wjhs.beans.dto.SwiperCreateDto;
+import com.ilovesshan.wjhs.beans.dto.SwiperSelectDto;
 import com.ilovesshan.wjhs.beans.dto.SwiperUpdateDto;
 import com.ilovesshan.wjhs.beans.pojo.Swiper;
 import com.ilovesshan.wjhs.beans.vo.SwiperVo;
@@ -39,17 +40,21 @@ public class SwiperController {
     @Autowired
     private AttachmentConverter attachmentConverter;
 
-    @ApiOperation("创建轮播图")
-    @PostMapping
-    public R create(@Validated @RequestBody SwiperCreateDto swiperCreateDto) {
-        boolean isSuccess = swiperService.create(swiperCreateDto);
-        return isSuccess ? R.success(R.SUCCESS_MESSAGE_INSERT) : R.fail(R.ERROR_MESSAGE_INSERT);
+
+    @ApiOperation("根据ID获取轮播图")
+    @GetMapping("/{id}")
+    public R selectById(@PathVariable String id) {
+        Swiper swiper = swiperService.selectById(id);
+        SwiperVo swiperVo = swiperConverter.po2vo(swiper);
+        swiperVo.setAttachment(attachmentConverter.po2vo(swiper.getAttachment()));
+        return R.success(R.SUCCESS_MESSAGE_SELECT, swiperVo);
     }
+
 
     @ApiOperation("获取轮播图")
     @GetMapping
-    public R selectByType(@RequestParam String type) {
-        List<Swiper> swipers = swiperService.selectByType(type);
+    public R selectByConditions(@Validated SwiperSelectDto swiperSelectDto) {
+        List<Swiper> swipers = swiperService.selectByConditions(swiperSelectDto);
         List<SwiperVo> swiperVos = swipers.stream().map(swiper -> {
             SwiperVo swiperVo = swiperConverter.po2vo(swiper);
             swiperVo.setAttachment(attachmentConverter.po2vo(swiper.getAttachment()));
@@ -59,17 +64,25 @@ public class SwiperController {
     }
 
 
+    @ApiOperation("创建轮播图")
+    @PostMapping
+    public R create(@Validated @RequestBody SwiperCreateDto swiperCreateDto) {
+        boolean isSuccess = swiperService.create(swiperCreateDto);
+        return isSuccess ? R.success(R.SUCCESS_MESSAGE_INSERT) : R.fail(R.ERROR_MESSAGE_INSERT);
+    }
+
+
     @ApiOperation("更新轮播图")
     @PutMapping
-    public R update(@Validated @RequestBody SwiperUpdateDto swiperUpdateDto){
-       boolean isSuccess =  swiperService.update(swiperUpdateDto);
+    public R update(@Validated @RequestBody SwiperUpdateDto swiperUpdateDto) {
+        boolean isSuccess = swiperService.update(swiperUpdateDto);
         return isSuccess ? R.success(R.SUCCESS_MESSAGE_UPDATE) : R.fail(R.ERROR_MESSAGE_UPDATE);
     }
 
     @ApiOperation("删除轮播图")
     @DeleteMapping("/{id}")
-    public R deleteById(@PathVariable String id){
-        boolean isSuccess =  swiperService.deleteById(id);
+    public R deleteById(@PathVariable String id) {
+        boolean isSuccess = swiperService.deleteById(id);
         return isSuccess ? R.success(R.SUCCESS_MESSAGE_DELETE) : R.fail(R.ERROR_MESSAGE_DELETE);
     }
 }
