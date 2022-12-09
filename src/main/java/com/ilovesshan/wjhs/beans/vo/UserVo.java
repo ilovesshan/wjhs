@@ -15,6 +15,8 @@ public class UserVo {
     private String nickName;
     private String phone;
     private String isDelete;
+    private AttachmentVo attachment;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastVisitTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;

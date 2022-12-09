@@ -3,6 +3,8 @@ package com.ilovesshan.wjhs.mapper;
 import com.ilovesshan.wjhs.beans.pojo.WxUser;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -20,4 +22,8 @@ public interface WxUserMapper {
     int update(WxUser wxUser);
 
     WxUser findUserById(String id);
+
+    List<WxUser> selectList();
+
+    int deleteById(String id);
 }

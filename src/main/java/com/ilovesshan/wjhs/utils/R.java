@@ -59,6 +59,7 @@ public class R implements Serializable {
     public static final String ERROR_USER_DISABLED = "账户不可用";
     public static final String ERROR_USER_LOCKED = "账户锁定";
     public static final String ERROR_USER_NAME_OR_PASSWORD = "用户名或者密码错误";
+    public static final String ERROR_OLD_PASSWORD = "旧密码错误";
     public static final String ERROR_USER_NOT_FOUND = "用户不存在";
     public static final String ERROR_USER_ALREADY_EXIST = "用户已经存在";
 

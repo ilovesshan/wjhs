@@ -1,6 +1,7 @@
 package com.ilovesshan.wjhs.service;
 
 import com.ilovesshan.wjhs.beans.dto.UserAuthDto;
+import com.ilovesshan.wjhs.beans.dto.UserUpdatePasswordDto;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,4 +15,5 @@ public interface AuthService{
 
     void logout();
 
+    boolean updatePassword(UserUpdatePasswordDto userUpdatePasswordDto);
 }
