@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class WxUserUpdateDto {
-    @NotNull
+    @NotNull(message = "用户ID不能为空")
     private String id;
     private String nickName;
     private String avatarUrl;
