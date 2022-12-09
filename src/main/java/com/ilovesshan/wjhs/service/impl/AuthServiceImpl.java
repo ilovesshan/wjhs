@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -50,6 +51,10 @@ public class AuthServiceImpl implements AuthService {
 
         // 将用户登录信息存在redis中
         redisCache.set(Constants.REDIS_USER_PREFIX + finedUser.getId(), finedUser, Constants.JWT_EXPIRATION);
+
+        // 更新用户近一次登录时间
+        finedUser.setLastVisitTime(new Date());
+        userService.update(finedUser);
 
         //  返回Token
         return JwtUtil.generatorToken(finedUser.getId(), finedUser.getUsername());
