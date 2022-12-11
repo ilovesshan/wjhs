@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ilovesshan.wjhs.mapper.RecycleGoodsTypeMapper">
+
+    <sql id="allColumns">
+        `id`, `name`, `describe`, `is_delete`, `status`, `create_time`, `update_time`
+    </sql>
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`recycle_goods_type` (`id`, `name`, `describe`)
+        values
+            (#{id}, #{name}, #{describe});
+    </insert>
+
+    <update id="update">
+        update `wjhs`.`recycle_goods_type`
+        <set>
+            <if test="name != null">
+                `name` = #{ name },
+            </if>
+            <if test="describe != null">
+                `describe` = #{ describe },
+            </if>
+            <if test="status != null">
+                `status` = #{ status },
+            </if>
+        </set>
+        where `id` = #{ id }
+    </update>
+
+    <delete id="deleteById">
+        update `wjhs`.`recycle_goods_type`  set is_delete = '14' where id = #{id}
+    </delete>
+
+    <select id="selectByName" resultType="com.ilovesshan.wjhs.beans.pojo.RecycleGoodsType">
+        select <include refid="allColumns" /> from `wjhs`.`recycle_goods_type` where `name` like #{name} and is_delete = '15'
+    </select>
+
+
+    <select id="selectList" resultType="com.ilovesshan.wjhs.beans.pojo.RecycleGoodsType">
+        select <include refid="allColumns" /> from `wjhs`.`recycle_goods_type` where is_delete = '15'
+    </select>
+
+
+    <select id="selectById" resultType="com.ilovesshan.wjhs.beans.pojo.RecycleGoodsType">
+        select <include refid="allColumns" /> from `wjhs`.`recycle_goods_type` where id = #{id} and is_delete = '15'
+    </select>
+
+</mapper>
