@@ -65,6 +65,7 @@ public class R implements Serializable {
 
 
     public static final String ERROR_RESOURCES_NOTFOUND = "资源不存在";
+    public static final String ERROR_RESOURCES_EXISTS = "资源已存在";
     public static final String SUCCESS_ATTACHMENT_UPLOAD = "附件上传成功";
     public static final String ERROR_ATTACHMENT_UPLOAD = "附件上传失败";
     public static final String ERROR_ATTACHMENT_NOTFOUND = "附件不存在";
