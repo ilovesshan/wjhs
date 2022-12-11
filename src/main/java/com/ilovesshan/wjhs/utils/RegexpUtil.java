@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
  * @date 2020/11/20 16:08
  */
 public final class RegexpUtil {
-    public static final String MONEY_REGEXP = "\\\\d+(\\\\.\\\\d{1,2})?";
+    // public static final String MONEY_REGEXP = "\\d+(\\.\\d{1,2})?";
+    public static final String MONEY_REGEXP = "^[0-9]+(\\.[0-9]{2})\\?$";
 
     /**
      * 匹配email地址

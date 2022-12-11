@@ -1,13 +1,14 @@
 package com.ilovesshan.wjhs.beans.dto;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.*;
 
-
 @Data
-public class RecycleGoodsCreateDto {
+public class RecycleGoodsUpdateDto {
+    @NotBlank(message = "回收商品ID不能为空")
+    private String id;
+
     @NotBlank(message = "回收商品ID不能为空")
     private String typeId;
 
@@ -15,6 +16,7 @@ public class RecycleGoodsCreateDto {
     @Size(min = 2, max = 8, message = "回收商品名称长度在2到8个字符之间")
     private String name;
 
+    private String status;
     private String describe;
 
     @NotBlank (message = "回收商品附件ID不能为空")

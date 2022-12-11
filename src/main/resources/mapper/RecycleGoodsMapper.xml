@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ilovesshan.wjhs.mapper.RecycleGoodsMapper">
+
+    <sql id="allColumns">
+        `id`, `type_id`, `name`, `describe`, `integral`, `attachment_id`, `user_price`, `driver_price`, `recycle_center_price`, `is_delete`, `status`, `create_time`, `update_time`
+    </sql>
+
+
+    <!-- 通用查询 查询关联附件 -->
+    <sql id="commonSelect">
+        select
+            rg.id, rg.type_id, rg.name, rg.`describe`, rg.integral, rg.attachment_id, rg.user_price, rg.driver_price, rg.recycle_center_price, rg.is_delete, rg.`status`, rg.create_time, rg.update_time,
+            a.id a_id , a.url a_url, a.create_by_user_id a_create_by_user_id, a.create_by_user_name a_create_by_user_name, a.create_by_user_type a_create_by_user_type, a.is_delete a_is_delete, a.create_time a_create_time, a.update_time a_update_time
+        from
+            recycle_goods rg left join attachment a on rg.attachment_id = a.id
+    </sql>
+
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`recycle_goods` (`id`, `type_id`, `name`, `describe`, `integral`, `attachment_id`, `user_price`, `driver_price`, `recycle_center_price`)
+        values
+            (#{id}, #{typeId}, #{name}, #{describe}, #{integral}, #{attachmentId}, #{userPrice}, #{driverPrice}, #{recycleCenterPrice});
+    </insert>
+
+    <update id="update">
+        update `wjhs`.`recycle_goods`
+        <set>
+            <if test="typeId != null">
+                `type_id` = #{typeId },
+            </if>
+            <if test="name != null">
+                `name` = #{ name },
+            </if>
+            <if test="describe != null">
+                `describe` = #{ describe },
+            </if>
+            <if test="integral != null">
+                `integral` = #{ integral },
+            </if>
+            <if test="attachmentId != null">
+                `attachment_id` = #{ attachmentId },
+            </if>
+            <if test="userPrice != null">
+                `user_price` = #{ userPrice },
+            </if>
+            <if test="driverPrice != null">
+                `driver_price` = #{ driverPrice },
+            </if>
+            <if test="recycleCenterPrice != null">
+                `recycle_center_price` = #{ recycleCenterPrice },
+            </if>
+            <if test="status != null">
+                `status` = #{ status },
+            </if>
+        </set>
+        where `id` = #{ id }
+    </update>
+
+    <delete id="deleteById">
+        update `wjhs`.`recycle_goods` set is_delete = '14' where id = #{id}
+    </delete>
+
+
+    <select id="selectByName" resultType="com.ilovesshan.wjhs.beans.pojo.RecycleGoods">
+        select <include refid="allColumns" /> from `wjhs`.`recycle_goods` where `name` like #{name} and is_delete = '15'
+    </select>
+
+
+
+    <resultMap id="recycleGoodsResultMap" type="com.ilovesshan.wjhs.beans.pojo.RecycleGoods" autoMapping="true">
+        <association property="attachment" javaType="com.ilovesshan.wjhs.beans.pojo.Attachment" autoMapping="true">
+            <id column="a_id" property="id"/>
+            <result column="a_url" property="url"/>
+            <result column="a_create_by_user_id" property="createByUserId"/>
+            <result column="a_create_by_user_name" property="createByUserName"/>
+            <result column="a_create_by_user_type" property="createByUserType"/>
+            <result column="a_create_time" property="createTime"/>
+            <result column="a_update_time" property="updateTime"/>
+        </association>
+    </resultMap>
+
+
+    <select id="selectList" resultMap="recycleGoodsResultMap">
+        <include refid="commonSelect" /> where rg.is_delete = '15' and  rg.is_delete = '15'
+    </select>
+
+    <select id="selectListByType" resultMap="recycleGoodsResultMap">
+        <include refid="commonSelect" />where rg.type_id = #{ type_id } and  rg.is_delete = '15'
+    </select>
+
+    <select id="selectById" resultMap="recycleGoodsResultMap">
+        <include refid="commonSelect" />where rg.id = #{id} and rg.is_delete = '15'
+    </select>
+
+
+
+    <resultMap id="selectAllListWithTypeMap" type="com.ilovesshan.wjhs.beans.pojo.RecycleGoodsAndType" autoMapping="true">
+        <id  column="rgt_id"  property="id"/>
+        <result column="rgt_name" property="name"/>
+        <result column="rgt_describe" property="describe"/>
+        <result column="rgt_is_delete" property="isDelete"/>
+        <result column="rgt_status" property="status"/>
+        <result column="rgt_create_time" property="updateTime"/>
+        <result column="rgt_update_time" property="createTime"/>
+        <collection property="recycleGoods" ofType="com.ilovesshan.wjhs.beans.pojo.RecycleGoods" autoMapping="true">
+            <association property="attachment" javaType="com.ilovesshan.wjhs.beans.pojo.Attachment" autoMapping="true">
+                <id column="a_id" property="id"/>
+                <result column="a_url" property="url"/>
+                <result column="a_create_by_user_id" property="createByUserId"/>
+                <result column="a_create_by_user_name" property="createByUserName"/>
+                <result column="a_create_by_user_type" property="createByUserType"/>
+                <result column="a_create_time" property="createTime"/>
+                <result column="a_update_time" property="updateTime"/>
+            </association>
+        </collection>
+
+    </resultMap>
+
+
+    <select id="selectAllListWithType"  resultMap="selectAllListWithTypeMap">
+        select
+            rgt.id rgt_id, rgt.name rgt_name, rgt.describe rgt_describe, rgt.is_delete rgt_is_delete, rgt.status rgt_status, rgt.create_time rgt_create_time, rgt.update_time rgt_update_time,
+            rg.id, rg.type_id, rg.name, rg.`describe`, rg.integral, rg.attachment_id, rg.user_price, rg.driver_price, rg.recycle_center_price, rg.is_delete, rg.`status`, rg.create_time, rg.update_time,
+            a.id a_id , a.url a_url, a.create_by_user_id a_create_by_user_id, a.create_by_user_name a_create_by_user_name, a.create_by_user_type a_create_by_user_type, a.is_delete a_is_delete, a.create_time a_create_time, a.update_time a_update_time
+        from
+            recycle_goods_type rgt
+                left join recycle_goods rg on rgt.id = rg.type_id
+                left join attachment a on rg.attachment_id = a.id
+        where
+            rgt.is_delete = '15' and rg.is_delete = '15' and rgt.status = '33' and rg.status = '33'
+    </select>
+
+</mapper>
