@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * @description:
  */
 
-@Api("回收商品分类模块")
+@Api(tags ="回收商品分类模块")
 @RestController
 @RequestMapping("/RecycleGoodsTypes")
 public class RecycleGoodsTypeController {
