@@ -45,7 +45,7 @@
             <if test="attachmentId != null  and attachmentId!= ''">
                 `attachment_id` = #{ attachmentId },
             </if>
-            <if test="nickName != null  and nickName!= ''">
+            <if test="nickName != null">
                 `nick_name` = #{ nickName },
             </if>
             <if test="phone != null  and phone!= ''">

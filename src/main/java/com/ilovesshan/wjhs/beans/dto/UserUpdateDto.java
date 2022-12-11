@@ -1,8 +1,10 @@
 package com.ilovesshan.wjhs.beans.dto;
 
+import com.ilovesshan.wjhs.utils.RegexpUtil;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -25,5 +27,6 @@ public class UserUpdateDto {
     private String gender;
     private String attachmentId;
     private String nickName;
+    @Pattern(regexp = RegexpUtil.MOBILE_PHONE_REGEXP, message = "请输入正确手机号")
     private String phone;
 }
