@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Api(tags ="回收商品分类模块")
 @RestController
-@RequestMapping("/RecycleGoodsTypes")
+@RequestMapping("/recycleGoodsTypes")
 public class RecycleGoodsTypeController {
 
     @Autowired

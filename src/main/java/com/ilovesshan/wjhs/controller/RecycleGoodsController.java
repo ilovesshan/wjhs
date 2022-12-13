@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Api(tags = "回收商品模块")
 @RestController
-@RequestMapping("/RecycleGoods")
+@RequestMapping("/recycleGoods")
 public class RecycleGoodsController {
 
     @Autowired
