@@ -6,6 +6,14 @@
         `id`, `type`, `attachment_id`, `title`, `sub_title`, `detail`, `link`, `is_delete`, `create_time`, `update_time`
     </sql>
 
+    <!-- 通用查询 关联附件-->
+    <sql id="commonSelect">
+        select
+            s.id, s.type, s.attachment_id, s.title, s.detail, s.link, s.sub_title, s.is_delete, s.create_time, s.update_time,
+            a.id a_id , a.url, a.create_by_user_id, a.create_by_user_name, a.create_by_user_type, a.is_delete, a.create_time, a.update_time
+        from
+            swiper s left join attachment a on s.attachment_id = a.id
+    </sql>
 
     <insert id="insert">
         insert into
@@ -23,11 +31,7 @@
     </resultMap>
 
     <select id="selectByConditions" resultMap="swiperMap">
-        select
-            s.id, s.type, s.attachment_id, s.title, s.detail, s.link, s.sub_title, s.is_delete, s.create_time, s.update_time,
-            a.id a_id , a.url, a.create_by_user_id, a.create_by_user_name, a.create_by_user_type, a.is_delete, a.create_time, a.update_time
-        from
-            swiper s left join attachment a on s.attachment_id = a.id
+        <include refid="commonSelect" />
         <where>
             <if test="title !=null and title != '' ">
                 (s.title like concat('%',#{title},'%') or s.sub_title like concat('%',#{title},'%') or s.detail like concat('%',#{title},'%'))
@@ -40,11 +44,7 @@
     </select>
 
     <select id="selectById" resultMap="swiperMap">
-        select
-            s.id, s.type, s.attachment_id, s.title, s.detail, s.link, s.sub_title, s.is_delete, s.create_time, s.update_time,
-            a.id a_id , a.url, a.create_by_user_id, a.create_by_user_name, a.create_by_user_type, a.is_delete, a.create_time, a.update_time
-        from
-            swiper s left join attachment a on s.attachment_id = a.id
+      <include refid="commonSelect" />
         where
             s.id = #{id} and s.is_delete = '15' and a.is_delete = '15';
     </select>

@@ -6,12 +6,91 @@
         `id`, `username`, `password`, `user_type`, `gender`, `attachment_id`, `nick_name`, `phone`, `is_delete`, `last_visit_time`, `create_time`, `update_time`
     </sql>
 
+    <!-- 通用查询sql 关联查询附件 -->
+    <sql id="commonSelect">
+        select
+            u.`id`, u.`username`, u.`password`, u.`user_type`, u.`gender`, u.`attachment_id`, u.`nick_name`, u.`phone`,
+            u.`is_delete`, u.`last_visit_time`, u.`create_time`, u.`update_time`,
+
+            a.`id` a_id, a.`url` a_url, a.`create_by_user_id` a_create_by_user_id, a.`create_by_user_name` a_create_by_user_name,
+            a.`create_by_user_type` a_create_by_user_type, a.`is_delete` a_is_delete,
+            a.`create_time` a_create_time , a.`update_time` a_update_time
+        from
+            `user` u left join attachment a on u.attachment_id = a.id
+    </sql>
+
+
+    <insert id="insert">
+        insert into `user`
+            (`id`, `username`, `password`, `user_type`, `gender`, `attachment_id`,  `nick_name`, `phone` )
+        values
+            (#{id}, #{username}, #{password}, #{userType}, #{gender}, #{attachmentId},  #{nickName}, #{phone})
+    </insert>
+
+    <update id="update">
+        update `user`
+        <set>
+            <if test="username != null and username!= '' ">
+                `username` = #{ username },
+            </if>
+            <if test="password != null and  password != ''">
+                `password` = #{ password },
+            </if>
+            <if test="userType != null and  userType != ''">
+                `user_type` = #{ userType },
+            </if>
+            <if test="gender != null  and gender!= ''">
+                `gender` = #{ gender },
+            </if>
+            <if test="attachmentId != null  and attachmentId!= ''">
+                `attachment_id` = #{ attachmentId },
+            </if>
+            <if test="nickName != null">
+                `nick_name` = #{ nickName },
+            </if>
+            <if test="phone != null  and phone!= ''">
+                `phone` = #{ phone },
+            </if>
+            <if test="lastVisitTime != null">
+                `last_visit_time` = #{ lastVisitTime },
+            </if>
+        </set>
+        where `id` = #{ id }
+    </update>
+
+    <update id="updatePassword">
+        update `user` set  `password` = #{ password } where `id` = #{ id }
+    </update>
+
+
+    <delete id="deleteById">
+        update `user` set is_delete = '14'  where `id` = #{ id }
+    </delete>
+
     <select id="findUserByUsername" resultType="com.ilovesshan.wjhs.beans.pojo.User">
         select <include refid="allColumns" /> from `user` where username like #{username};
     </select>
 
 
-    <select id="findUserById" resultType="com.ilovesshan.wjhs.beans.pojo.User">
-        select <include refid="allColumns" /> from `user` where id like #{id};
+    <resultMap id="userResultMap" type="com.ilovesshan.wjhs.beans.pojo.User" autoMapping="true">
+        <association property="attachment" javaType="com.ilovesshan.wjhs.beans.pojo.Attachment" autoMapping="true">
+            <id column="a_id" property="id"/>
+            <result column="a_url" property="url"/>
+            <result column="a_create_by_user_id" property="createByUserId"/>
+            <result column="a_create_by_user_name" property="createByUserName"/>
+            <result column="a_create_by_user_type" property="createByUserType"/>
+            <result column="a_create_time" property="createTime"/>
+            <result column="a_update_time" property="updateTime"/>
+        </association>
+    </resultMap>
+
+    <select id="findUserById"  resultMap="userResultMap">
+        <include refid="commonSelect" />
+        where u.id = #{id} and u.is_delete = '15';
+    </select>
+
+    <select id="selectListByType"  resultMap="userResultMap">
+        <include refid="commonSelect" />
+        where u.is_delete = '15' and u.user_type = #{type};
     </select>
 </mapper>

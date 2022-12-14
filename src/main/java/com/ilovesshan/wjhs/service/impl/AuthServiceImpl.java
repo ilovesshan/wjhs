@@ -1,6 +1,7 @@
 package com.ilovesshan.wjhs.service.impl;
 
 import com.ilovesshan.wjhs.beans.dto.UserAuthDto;
+import com.ilovesshan.wjhs.beans.dto.UserUpdatePasswordDto;
 import com.ilovesshan.wjhs.beans.pojo.User;
 import com.ilovesshan.wjhs.contants.Constants;
 import com.ilovesshan.wjhs.core.base.UserCache;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -51,6 +53,10 @@ public class AuthServiceImpl implements AuthService {
         // 将用户登录信息存在redis中
         redisCache.set(Constants.REDIS_USER_PREFIX + finedUser.getId(), finedUser, Constants.JWT_EXPIRATION);
 
+        // 更新用户近一次登录时间
+        finedUser.setLastVisitTime(new Date());
+        userService.update(finedUser);
+
         //  返回Token
         return JwtUtil.generatorToken(finedUser.getId(), finedUser.getUsername());
     }
@@ -64,5 +70,23 @@ public class AuthServiceImpl implements AuthService {
         redisCache.remove(Constants.REDIS_USER_PREFIX + userId);
 
         log.debug("{}退出登录, 用户ID: {}", username, userId);
+    }
+
+    @Override
+    public boolean updatePassword(UserUpdatePasswordDto userUpdatePasswordDto) {
+        User finedUser = userService.findUserById(userUpdatePasswordDto.getId());
+        // 用户不存在
+        if (Objects.isNull(finedUser)) {
+            throw new CustomException(R.ERROR_USER_NOT_FOUND);
+        }
+
+        // 旧密码错误
+        if (!userUpdatePasswordDto.getOldPassword().equals(AesUtils.decrypt(finedUser.getPassword()))) {
+            throw new CustomException(R.ERROR_OLD_PASSWORD);
+        }
+
+        // 更新用户密码
+        userUpdatePasswordDto.setNewPassword(AesUtils.encrypt(userUpdatePasswordDto.getNewPassword()));
+        return userService.updatePassword(userUpdatePasswordDto) > 0;
     }
 }

@@ -6,6 +6,11 @@
         `id` , `open_id`, `skey`, `session_key`, `gender`, `avatar_url`, `city`, `province`, `country`, `nick_name`, `is_delete`, `last_visit_time`, `create_time`, `update_time`
     </sql>
 
+    <delete id="deleteById">
+        update `wjhs`.`wx_user` set is_delete = '14'  where `id` = #{ id }
+    </delete>
+
+
     <select id="findUserByOpenId" resultType="com.ilovesshan.wjhs.beans.pojo.WxUser">
         select <include refid="allColumns"/> from `wx_user` where open_id = #{openid};
     </select>
@@ -49,7 +54,11 @@
 
 
     <select id="findUserById" resultType="com.ilovesshan.wjhs.beans.pojo.WxUser">
-        select <include refid="allColumns"/> from `wx_user` where id = #{openid};
+        select <include refid="allColumns"/> from `wx_user` where id = #{openid} and is_delete = '15';
     </select>
 
+
+    <select id="selectList" resultType="com.ilovesshan.wjhs.beans.pojo.WxUser">
+        select <include refid="allColumns"/> from `wx_user` where is_delete = '15';
+    </select>
 </mapper>

@@ -15,6 +15,7 @@ public class User {
     private String nickName;
     private String phone;
     private String isDelete;
+    private Attachment attachment;
     private Date lastVisitTime;
     private Date createTime;
     private Date updateTime;

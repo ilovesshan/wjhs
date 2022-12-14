@@ -59,11 +59,13 @@ public class R implements Serializable {
     public static final String ERROR_USER_DISABLED = "账户不可用";
     public static final String ERROR_USER_LOCKED = "账户锁定";
     public static final String ERROR_USER_NAME_OR_PASSWORD = "用户名或者密码错误";
+    public static final String ERROR_OLD_PASSWORD = "旧密码错误";
     public static final String ERROR_USER_NOT_FOUND = "用户不存在";
     public static final String ERROR_USER_ALREADY_EXIST = "用户已经存在";
 
 
     public static final String ERROR_RESOURCES_NOTFOUND = "资源不存在";
+    public static final String ERROR_RESOURCES_EXISTS = "资源已存在";
     public static final String SUCCESS_ATTACHMENT_UPLOAD = "附件上传成功";
     public static final String ERROR_ATTACHMENT_UPLOAD = "附件上传失败";
     public static final String ERROR_ATTACHMENT_NOTFOUND = "附件不存在";

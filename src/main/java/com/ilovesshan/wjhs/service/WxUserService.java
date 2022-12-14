@@ -2,6 +2,8 @@ package com.ilovesshan.wjhs.service;
 
 import com.ilovesshan.wjhs.beans.pojo.WxUser;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -17,4 +19,8 @@ public interface WxUserService {
     boolean update(WxUser wxUser);
 
     WxUser findUserById(String id);
+
+    List<WxUser> selectList();
+
+    boolean deleteById(String id);
 }
