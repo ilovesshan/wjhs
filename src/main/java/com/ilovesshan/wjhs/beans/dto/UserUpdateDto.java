@@ -27,6 +27,7 @@ public class UserUpdateDto {
     private String gender;
     private String attachmentId;
     private String nickName;
+    @NotNull(message = "手机号不能为空")
     @Pattern(regexp = RegexpUtil.MOBILE_PHONE_REGEXP, message = "请输入正确手机号")
     private String phone;
 }
