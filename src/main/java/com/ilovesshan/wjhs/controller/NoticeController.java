@@ -70,7 +70,7 @@ public class NoticeController {
 
 
     @DeleteMapping("/{id}")
-    @ApiOperation("根据ID查询公告")
+    @ApiOperation("根据ID删除")
     public R deleteById(@PathVariable String id) {
         boolean isSuccess = noticeService.deleteById(id);
         return isSuccess ? R.success(R.SUCCESS_MESSAGE_DELETE) : R.fail(R.ERROR_MESSAGE_DELETE);
