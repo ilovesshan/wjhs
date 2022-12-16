@@ -22,8 +22,9 @@ public class RecycleGoodsUpdateDto {
     @NotBlank (message = "回收商品附件ID不能为空")
     private String attachmentId;
 
-    @Min(value = 1, message = "兑换积分最小不能低于1")
-    @Max(value = 10, message = "兑换积分最大不能大于10")
+    @NotNull(message = "兑换积分不能为空")
+    @DecimalMin(value = "0", inclusive = false, message = "兑换积分必须大于0")
+    @Digits(integer = 10, fraction = 2, message = "兑换积分 最大长度:10，允许精度:2")
     private double integral;
 
     @NotNull(message = "用户价格不能为空")

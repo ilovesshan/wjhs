@@ -3,12 +3,12 @@ package com.ilovesshan.wjhs.beans.dto;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
 public class NoticeSelectDto {
-    @NotEmpty(message = "查询类型不能为空")
+    @NotBlank(message = "查询类型不能为空")
     private String type;
     private String title;
     private String detail;
