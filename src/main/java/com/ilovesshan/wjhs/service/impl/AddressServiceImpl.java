@@ -39,7 +39,7 @@ public class AddressServiceImpl implements AddressService {
     public Address selectById(String id) {
         Address findAddress = addressMapper.selectById(id);
         if (Objects.isNull(findAddress)) {
-            throw new RuntimeException(R.ERROR_RESOURCES_NOTFOUND);
+            throw new CustomException(R.ERROR_RESOURCES_NOTFOUND);
         }
         return findAddress;
     }
