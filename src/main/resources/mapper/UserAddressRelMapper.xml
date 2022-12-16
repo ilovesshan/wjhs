@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ilovesshan.wjhs.mapper.UserAddressRelMapper">
+
+    <insert id="insert">
+        insert into `wjhs`.`wx_user_address_rel` (`id`, `user_id`, `address_id`) values (#{ id }, #{ userId }, #{ addressId });
+    </insert>
+
+    <delete id="deleteByAddressId">
+        update `wjhs`.`wx_user_address_rel`  set `is_delete` = '14' where address_id = #{ id }
+    </delete>
+</mapper>

@@ -3,6 +3,7 @@ package com.ilovesshan.wjhs.core.handler;
 import com.ilovesshan.wjhs.core.exception.AccessDeniedException;
 import com.ilovesshan.wjhs.core.exception.AuthorizationException;
 import com.ilovesshan.wjhs.core.exception.CustomException;
+import com.ilovesshan.wjhs.core.exception.TransactionalException;
 import com.ilovesshan.wjhs.utils.R;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -33,6 +34,18 @@ public class GlobalExceptionHandler {
     public R handleException(CustomException exception) {
         exception.printStackTrace();
         return R.fail(exception.getMessage(), null);
+    }
+
+
+    /**
+     * 事务异常
+     */
+    @ExceptionHandler(TransactionalException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public R handleTransactionalException(TransactionalException exception) {
+        exception.printStackTrace();
+        return R.error(exception.getMessage(), null);
     }
 
 
