@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ilovesshan.wjhs.mapper.RecycleOrderMapper">
+<!--    关联查询 订单详情以及上门地址信息-->
+    <sql id="commonSelect">
+        select
+            ro.id, ro.submit_user_id, ro.receive_user_id, ro.order_type, ro.status, ro.trading_money, ro.total_weight, ro.total_integral, ro.address_id, ro.appointment_begin_time, ro.appointment_end_time,
+            ro.note, ro.note_attachmentIds, ro.is_delete, ro.create_time, ro.update_time,
+            -- rod.id rod_id, rod.order_id rod_order_id, rod.goods_id rod_goods_id , rod.weight rod_weight, rod.is_delete rod_is_delete, rod.create_time rod_create_time, rod.update_time rod_update_time,
+            addr.id addr_id,  addr.detail_address addr_detail_address,  addr.area addr_area,  addr.city addr_city,
+            addr.province addr_province,  addr.phone addr_phone,  addr.user_name addr_user_name,  addr.longitude addr_longitude,  addr.latitude addr_latitude,
+            addr.is_default addr_is_default,  addr.is_delete addr_is_delete,  addr.create_time addr_create_time,  addr.update_time addr_update_time
+        from
+            `wjhs`.`recycle_order` ro
+                -- left join `wjhs`.`recycle_order_detail` rod on ro.id = rod.order_id
+                left join `wjhs`.`address` addr on ro.address_id = addr.id
+    </sql>
+
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`recycle_order` (`id`, `submit_user_id`, `receive_user_id`, `order_type`, `status`, `trading_money`, `total_weight`, `total_integral`, `address_id`, `appointment_begin_time`, `appointment_end_time`, `note`, `note_attachmentIds`)
+        values
+            (#{id}, #{submitUserId}, #{receiveUserId}, #{orderType}, #{status}, #{tradingMoney}, #{totalWeight}, #{totalIntegral}, #{addressId}, #{appointmentBeginTime}, #{appointmentEndTime}, #{note}, #{noteAttachmentIds});
+    </insert>
+
+
+    <update id="updateOrderStatus">
+        update  `wjhs`.`recycle_order`
+        <set>
+            <if test="receiveUserId!=null and receiveUserId != '' ">
+                receive_user_id = #{ receiveUserId },
+            </if>
+            status = #{ status }
+        </set>
+        where id = #{ id }
+    </update>
+
+
+    <update id="deleteById">
+        update  `wjhs`.`recycle_order` set `is_delete` = '14'
+    </update>
+
+    <resultMap id="RecycleOrderMap" type="com.ilovesshan.wjhs.beans.pojo.RecycleOrder" autoMapping="true">
+        <!-- 映射地址信息 -->
+        <association property="address" javaType="com.ilovesshan.wjhs.beans.pojo.Address" autoMapping="true" columnPrefix="addr_" />
+
+        <!-- 映射详细信息 -->
+        <!-- <collection property="recycleOrderDetails" ofType="com.ilovesshan.wjhs.beans.pojo.RecycleOrderDetail" autoMapping="true" columnPrefix="rod_" />-->
+    </resultMap>
+
+
+    <select id="selectById" resultMap="RecycleOrderMap">
+        <include refid="commonSelect" />
+        where
+            ro.is_delete = '15'
+            and addr.is_delete = '15'
+            and ro.id = #{ id };
+    </select>
+
+
+    <select id="selectListByStatus"  resultMap="RecycleOrderMap">
+        <include refid="commonSelect" />
+        where
+            ro.is_delete = '15'
+            and addr.is_delete = '15'
+            and ro.`status` = #{ status }
+    </select>
+</mapper>

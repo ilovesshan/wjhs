@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ilovesshan.wjhs.mapper.RecycleOrderDetailMapper">
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`recycle_order_detail` (`id`, `goods_id`, `order_id`, `weight`)
+        values
+            <foreach collection="recycleOrderDetails" separator="," item="recycleOrder">
+                 (#{recycleOrder.id}, #{recycleOrder.goodsId}, #{recycleOrder.orderId}, #{recycleOrder.weight})
+            </foreach>
+    </insert>
+
+    <update id="deleteByOrderId">
+        update  `wjhs`.`recycle_order_detail` set `is_delete` = '14'
+    </update>
+
+
+    <resultMap id="RecycleOrderDetailMap" type="com.ilovesshan.wjhs.beans.pojo.RecycleOrderDetail" autoMapping="true">
+        <collection property="recycleGoods" ofType="com.ilovesshan.wjhs.beans.pojo.RecycleGoods" autoMapping="true" columnPrefix="rg_">
+            <association property="attachment" javaType="com.ilovesshan.wjhs.beans.pojo.Attachment" autoMapping="true" columnPrefix="a_"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectListByOrderId" resultMap="RecycleOrderDetailMap">
+        select
+            rod.`id` id, rod.`order_id` order_id, rod.`goods_id` goods_id , rod.`weight` weight, rod.`is_delete` is_delete, rod.`create_time` create_time, rod.`update_time` update_time,
+            rg.id rg_id, rg.type_id rg_type_id, rg.name rg_name, rg.`describe` rg_describe, rg.integral rg_integral, rg.attachment_id rg_attachment_id, rg.user_price rg_user_price, rg.driver_price rg_driver_price,
+            rg.recycle_center_price rg_recycle_center_price, rg.is_delete rg_is_delete, rg.`status` rg_status, rg.create_time rg_create_time, rg.update_time rg_update_time,
+            a.id rg_a_id , a.url rg_a_url, a.create_by_user_id rg_a_create_by_user_id, a.create_by_user_name rg_a_create_by_user_name, a.create_by_user_type rg_a_create_by_user_type, a.is_delete rg_a_is_delete, a.create_time rg_a_create_time, a.update_time rg_a_update_time
+        from
+            `wjhs`.`recycle_order_detail`  rod
+                left join `wjhs`.`recycle_goods` rg on rod.goods_id = rg.id
+                left join attachment a on rg.attachment_id = a.id
+        where rod.order_id = #{ orderId };
+    </select>
+</mapper>
