@@ -46,7 +46,7 @@ public class UserController {
         List<User> users = userService.selectListByType(type);
         List<UserVo> userVos = users.stream().map(user -> {
             UserVo userVo = userConverter.po2vo(user);
-            if (user.getAttachment().getId() != null) {
+            if (user.getAttachment() != null && user.getAttachment().getId() != null) {
                 userVo.setAttachment(attachmentConverter.po2vo(user.getAttachment()));
             } else {
                 userVo.setAttachment(null);
