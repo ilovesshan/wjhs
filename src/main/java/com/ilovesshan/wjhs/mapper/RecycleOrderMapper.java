@@ -25,4 +25,6 @@ public interface RecycleOrderMapper {
     int insert(RecycleOrder recycleOrder);
 
     int updateOrderStatus(@Param("id") String id, @Param("status") String status, @Param("receiveUserId") String receiveUserId);
+
+    int updateOrderStatusWithTimeOut(String userId);
 }
