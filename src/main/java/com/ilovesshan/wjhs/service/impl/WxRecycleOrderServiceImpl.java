@@ -52,29 +52,7 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
         if (Objects.isNull(findRecycleOrder)) {
             throw new CustomException(R.ERROR_RESOURCES_NOTFOUND);
         }
-
-        // 查询骑手信息
-        String driverId = findRecycleOrder.getReceiveUserId();
-        if (StringUtils.hasText(driverId)) {
-            User user = userService.findUserById(driverId);
-            findRecycleOrder.setReceiveUser(user);
-        }
-
-        // 查询订单附件列表
-        String noteAttachmentIds = findRecycleOrder.getNoteAttachmentIds();
-        if (StringUtils.hasText(noteAttachmentIds)) {
-            for (String attachmentId : noteAttachmentIds.split(",")) {
-                Attachment attachment = attachmentService.selectById(attachmentId);
-                // attachments 默认是null 先初始化
-                if (Objects.isNull(findRecycleOrder.getAttachments()))
-                    findRecycleOrder.setAttachments(new ArrayList<>());
-                findRecycleOrder.getAttachments().add(attachment);
-            }
-        }
-        // 查询商品详情信息
-        List<RecycleOrderDetail> recycleOrderDetails = recycleOrderDetailService.selectListByOrderId(id);
-        findRecycleOrder.setRecycleOrderDetails(recycleOrderDetails);
-        return findRecycleOrder;
+        return commonConditionsSelectHandlerSingle(findRecycleOrder);
     }
 
     @Override
@@ -86,29 +64,8 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
         }
 
         // 再根据相关状态查询订单
-        List<RecycleOrder> recycleOrders = recycleOrderMapper.selectListByStatus(status);
-        recycleOrders.forEach(recycleOrder -> {
-            // 查询骑手信息
-            String driverId = recycleOrder.getReceiveUserId();
-            if (StringUtils.hasText(driverId)) {
-                User user = userService.findUserById(driverId);
-                recycleOrder.setReceiveUser(user);
-            }
-            // 查询订单附件列表
-            String noteAttachmentIds = recycleOrder.getNoteAttachmentIds();
-            if (StringUtils.hasText(noteAttachmentIds)) {
-                for (String attachmentId : noteAttachmentIds.split(",")) {
-                    Attachment attachment = attachmentService.selectById(attachmentId);
-                    // attachments 默认是null 先初始化
-                    if (Objects.isNull(recycleOrder.getAttachments())) recycleOrder.setAttachments(new ArrayList<>());
-                    recycleOrder.getAttachments().add(attachment);
-                }
-            }
-            // 查询商品详情信息
-            List<RecycleOrderDetail> recycleOrderDetails = recycleOrderDetailService.selectListByOrderId(recycleOrder.getId());
-            recycleOrder.setRecycleOrderDetails(recycleOrderDetails);
-        });
-        return recycleOrders;
+        List<RecycleOrder> recycleOrders = recycleOrderMapper.selectListByStatusAndOrderType("10", status);
+        return commonConditionsSelectHandlerList(recycleOrders);
     }
 
 
@@ -146,5 +103,39 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
     public boolean updateOrderStatus(RecycleOrderUpdateDto recycleOrderUpdateDto) {
         selectById(recycleOrderUpdateDto.getId());
         return recycleOrderMapper.updateOrderStatus(recycleOrderUpdateDto.getId(), recycleOrderUpdateDto.getStatus(), recycleOrderUpdateDto.getReceiveUserId()) > 0;
+    }
+
+
+    // 订单相关信息的通用查询方法 列表
+    @Override
+    public List<RecycleOrder> commonConditionsSelectHandlerList(List<RecycleOrder> recycleOrders) {
+        recycleOrders.forEach(recycleOrder -> recycleOrder = commonConditionsSelectHandlerSingle(recycleOrder));
+        return recycleOrders;
+    }
+
+
+    // 订单相关信息的通用查询方法 单个
+    @Override
+    public RecycleOrder commonConditionsSelectHandlerSingle(RecycleOrder recycleOrder) {
+        // 查询骑手信息
+        String driverId = recycleOrder.getReceiveUserId();
+        if (StringUtils.hasText(driverId)) {
+            User user = userService.findUserById(driverId);
+            recycleOrder.setReceiveUser(user);
+        }
+        // 查询订单附件列表
+        String noteAttachmentIds = recycleOrder.getNoteAttachmentIds();
+        if (StringUtils.hasText(noteAttachmentIds)) {
+            for (String attachmentId : noteAttachmentIds.split(",")) {
+                Attachment attachment = attachmentService.selectById(attachmentId);
+                // attachments 默认是null 先初始化
+                if (Objects.isNull(recycleOrder.getAttachments())) recycleOrder.setAttachments(new ArrayList<>());
+                recycleOrder.getAttachments().add(attachment);
+            }
+        }
+        // 查询商品详情信息
+        List<RecycleOrderDetail> recycleOrderDetails = recycleOrderDetailService.selectListByOrderId(recycleOrder.getId());
+        recycleOrder.setRecycleOrderDetails(recycleOrderDetails);
+        return recycleOrder;
     }
 }

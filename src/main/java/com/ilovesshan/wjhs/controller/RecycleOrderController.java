@@ -1,13 +1,11 @@
 package com.ilovesshan.wjhs.controller;
 
-import com.ilovesshan.wjhs.beans.converter.RecycleOrderConverter;
-import com.ilovesshan.wjhs.beans.converter.RecycleOrderDetailConverter;
-import com.ilovesshan.wjhs.beans.dto.RecycleOrderCreateDto;
 import com.ilovesshan.wjhs.beans.dto.RecycleOrderUpdateDto;
 import com.ilovesshan.wjhs.beans.pojo.RecycleOrder;
-import com.ilovesshan.wjhs.beans.pojo.RecycleOrderDetail;
 import com.ilovesshan.wjhs.core.annotation.Log;
+import com.ilovesshan.wjhs.core.base.UserCache;
 import com.ilovesshan.wjhs.service.RecycleOrderService;
+import com.ilovesshan.wjhs.service.WxRecycleOrderService;
 import com.ilovesshan.wjhs.utils.OrderVoParseUtil;
 import com.ilovesshan.wjhs.utils.R;
 import io.swagger.annotations.Api;
@@ -17,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,27 +34,55 @@ public class RecycleOrderController {
     private RecycleOrderService recycleOrderService;
 
     @Autowired
-    private RecycleOrderConverter recycleOrderConverter;
-
-    @Autowired
-    private RecycleOrderDetailConverter recycleOrderDetailConverter;
+    private WxRecycleOrderService wxRecycleOrderService;
 
     @Autowired
     private OrderVoParseUtil orderVoParseUtil;
+
+    @ApiOperation("查询骑手相关的订单列表")
+    @GetMapping("/driver")
+    public R selectListByStatus(@RequestParam(required = false) String type, @RequestParam(required = false) String status) {
+        List<RecycleOrder> recycleOrders = null;
+        switch (type) {
+            case "1":
+                // 小程序发出的订单  status(根据查询条件传参)、orderType=10(用户到骑手)、userId(与我相关的订单信息)
+                recycleOrders = recycleOrderService.selectListByStatusAndOrderTypeAndUserId(status, "10", UserCache.get("userId"));
+                break;
+            case "2":
+                // 我发出的订单  orderType=11(骑手到回收中心)、userId(与我相关的订单信息)
+                recycleOrders = recycleOrderService.selectListByOrderTypeAndUserId("11", UserCache.get("userId"));
+                break;
+            default:
+                // 查询全部  status=4(待接单)、orderType=10(用户到骑手)
+                recycleOrders = recycleOrderService.selectListByStatusAndOrderType("4", "10");
+        }
+        return R.success(R.SUCCESS_MESSAGE_SELECT, orderVoParseUtil.parseList(recycleOrders));
+    }
+
+
+    @ApiOperation("查询回收中心相关的订单列表")
+    @GetMapping("/recycleCenter")
+    public R selectListByStatus() {
+        // orderType=11(骑手到回收中心)、 status=7(已完结)
+        List<RecycleOrder> recycleOrders = recycleOrderService.selectListByStatusAndOrderType("7", "11");
+        return R.success(R.SUCCESS_MESSAGE_SELECT, orderVoParseUtil.parseList(recycleOrders));
+    }
+
+
+    @ApiOperation("查询平台端相关的订单列表")
+    @GetMapping("/platform")
+    public R selectList(String status, @RequestParam String orderType) {
+        // 查全部  status(根据查询条件传参)、orderType(根据查询条件传参)
+        List<RecycleOrder> recycleOrders = recycleOrderService.selectListByStatusAndOrderType(status, orderType);
+        return R.success(R.SUCCESS_MESSAGE_SELECT, orderVoParseUtil.parseList(recycleOrders));
+    }
 
 
     @ApiOperation("根据ID查询订单详情")
     @GetMapping("/{id}")
     public R selectById(@PathVariable String id) {
-        RecycleOrder recycleOrder = recycleOrderService.selectById(id);
+        RecycleOrder recycleOrder = wxRecycleOrderService.selectById(id);
         return R.success(R.SUCCESS_MESSAGE_SELECT, orderVoParseUtil.parseSingle(recycleOrder));
-    }
-
-    @ApiOperation("查询订单列表")
-    @GetMapping
-    public R selectList(@RequestParam String status) {
-        List<RecycleOrder> recycleOrders = recycleOrderService.selectListByStatus(status);
-        return R.success(R.SUCCESS_MESSAGE_SELECT, orderVoParseUtil.parseList(recycleOrders));
     }
 
 
@@ -65,20 +90,8 @@ public class RecycleOrderController {
     @ApiOperation("根据ID删除订单")
     @DeleteMapping("/{id}")
     public R deleteById(@PathVariable String id) {
-        boolean isSuccess = recycleOrderService.deleteById(id);
+        boolean isSuccess = wxRecycleOrderService.deleteById(id);
         return isSuccess ? R.success(R.SUCCESS_MESSAGE_DELETE) : R.fail(R.ERROR_MESSAGE_DELETE);
-    }
-
-
-    @Log(businessModule = "回收商品订单模块", businessType = "POST", businessDescribe = "新增订单")
-    @ApiOperation("新增订单")
-    @PostMapping
-    public R create(@Validated @RequestBody RecycleOrderCreateDto recycleOrderCreateDto) {
-        RecycleOrder recycleOrder = recycleOrderConverter.dto2po(recycleOrderCreateDto);
-        List<RecycleOrderDetail> recycleOrderDetails = recycleOrderCreateDto.getGoodsList().stream().map(recycleOrderDetailConverter::dto2po).collect(Collectors.toList());
-        recycleOrder.setRecycleOrderDetails(recycleOrderDetails);
-        boolean isSuccess = recycleOrderService.create(recycleOrder);
-        return isSuccess ? R.success(R.SUCCESS_MESSAGE_INSERT) : R.fail(R.ERROR_MESSAGE_INSERT);
     }
 
 
@@ -86,7 +99,7 @@ public class RecycleOrderController {
     @ApiOperation("更新订单状态")
     @PutMapping
     public R update(@Validated @RequestBody RecycleOrderUpdateDto recycleOrderUpdateDto) {
-        boolean isSuccess = recycleOrderService.updateOrderStatus(recycleOrderUpdateDto);
+        boolean isSuccess = wxRecycleOrderService.updateOrderStatus(recycleOrderUpdateDto);
         return isSuccess ? R.success(R.SUCCESS_MESSAGE_UPDATE) : R.fail(R.ERROR_MESSAGE_UPDATE);
     }
 

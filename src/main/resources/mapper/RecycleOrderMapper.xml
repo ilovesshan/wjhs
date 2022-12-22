@@ -64,11 +64,40 @@
     </select>
 
 
-    <select id="selectListByStatus"  resultMap="RecycleOrderMap">
+    <select id="selectListByStatusAndOrderType"  resultMap="RecycleOrderMap">
         <include refid="commonSelect" />
-        where
+        <where>
             ro.is_delete = '15'
             and addr.is_delete = '15'
+            and ro.`order_type` = #{ orderType }
             and ro.`status` = #{ status }
+        </where>
+        order by ro.`create_time` desc
     </select>
+
+
+    <select id="selectListByOrderTypeAndUserId" resultMap="RecycleOrderMap">
+        <include refid="commonSelect" />
+        <where>
+            ro.is_delete = '15'
+            and addr.is_delete = '15'
+            and ro.`order_type` = #{ orderType }
+            and ro.`submit_user_id` = #{userId}
+        </where>
+        order by ro.`create_time` desc
+    </select>
+
+
+    <select id="selectListByStatusAndOrderTypeAndUserId" resultMap="RecycleOrderMap">
+        <include refid="commonSelect" />
+        <where>
+            ro.is_delete = '15'
+            and addr.is_delete = '15'
+            and ro.`order_type` = #{ orderType }
+            and ro.`status` = #{ status }
+            and ro.`receive_user_id` = #{ userId }
+        </where>
+        order by ro.`create_time` desc
+    </select>
+
 </mapper>

@@ -1,6 +1,5 @@
 package com.ilovesshan.wjhs.service;
 
-import com.ilovesshan.wjhs.beans.dto.RecycleOrderUpdateDto;
 import com.ilovesshan.wjhs.beans.pojo.RecycleOrder;
 
 import java.util.List;
@@ -13,13 +12,9 @@ import java.util.List;
  * @description:
  */
 public interface RecycleOrderService {
-    RecycleOrder selectById(String id);
+    List<RecycleOrder> selectListByStatusAndOrderType(String status, String orderType);
 
-    List<RecycleOrder> selectListByStatus(String status);
+    List<RecycleOrder> selectListByOrderTypeAndUserId(String s, String userId);
 
-    boolean deleteById(String id);
-
-    boolean create(RecycleOrder recycleOrder);
-
-    boolean updateOrderStatus(RecycleOrderUpdateDto recycleOrderUpdateDto);
+    List<RecycleOrder> selectListByStatusAndOrderTypeAndUserId(String status, String orderType, String userId);
 }

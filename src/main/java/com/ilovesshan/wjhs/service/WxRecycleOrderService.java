@@ -22,4 +22,8 @@ public interface WxRecycleOrderService {
     boolean create(RecycleOrder recycleOrder);
 
     boolean updateOrderStatus(RecycleOrderUpdateDto recycleOrderUpdateDto);
+
+    List<RecycleOrder> commonConditionsSelectHandlerList(List<RecycleOrder> recycleOrders);
+
+    RecycleOrder commonConditionsSelectHandlerSingle(RecycleOrder recycleOrder);
 }

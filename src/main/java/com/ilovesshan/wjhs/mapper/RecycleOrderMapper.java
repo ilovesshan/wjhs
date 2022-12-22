@@ -18,13 +18,17 @@ import java.util.List;
 public interface RecycleOrderMapper {
     RecycleOrder selectById(String id);
 
-    List<RecycleOrder> selectListByStatus(String status);
-
     int deleteById(String id);
 
     int insert(RecycleOrder recycleOrder);
 
+    int updateOrderStatusWithTimeOut(String userId);
+
     int updateOrderStatus(@Param("id") String id, @Param("status") String status, @Param("receiveUserId") String receiveUserId);
 
-    int updateOrderStatusWithTimeOut(String userId);
+    List<RecycleOrder> selectListByStatusAndOrderType(@Param("orderType") String orderType, @Param("status") String status);
+
+    List<RecycleOrder> selectListByOrderTypeAndUserId(@Param("orderType") String orderType, @Param("userId") String userId);
+
+    List<RecycleOrder> selectListByStatusAndOrderTypeAndUserId(@Param("status") String status, @Param("orderType") String orderType, @Param("userId") String userId);
 }
