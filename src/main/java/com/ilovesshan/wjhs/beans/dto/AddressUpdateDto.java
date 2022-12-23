@@ -1,0 +1,36 @@
+package com.ilovesshan.wjhs.beans.dto;
+
+import com.ilovesshan.wjhs.utils.RegexpUtil;
+import lombok.Data;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+@Data
+public class AddressUpdateDto {
+    @NotNull(message = "ID不能为空")
+    private String id;
+
+    @NotNull(message = "用户名称不能为空")
+    @Size(max = 24, min = 4, message = "用户名长度在4到24个字符之间")
+    private String userName;
+
+    @NotNull(message = "手机号不能为空")
+    @Pattern(regexp = RegexpUtil.MOBILE_PHONE_REGEXP, message = "请输入正确手机号")
+    private String phone;
+
+    @NotNull(message = "省不能为空")
+    private String province;
+    @NotNull(message = "市不能为空")
+    private String city;
+    @NotNull(message = "县/区不能为空")
+    private String area;
+    @NotNull(message = "详细地址不能为空")
+    private String detailAddress;
+
+    private String isDefault;
+
+    private String longitude;
+    private String latitude;
+}

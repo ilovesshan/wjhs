@@ -2,15 +2,21 @@
 package com.ilovesshan.wjhs.service.impl;
 
 import com.ilovesshan.wjhs.beans.dto.UserUpdatePasswordDto;
+import com.ilovesshan.wjhs.beans.pojo.Account;
+import com.ilovesshan.wjhs.beans.pojo.AccountRecord;
 import com.ilovesshan.wjhs.beans.pojo.User;
 import com.ilovesshan.wjhs.core.exception.CustomException;
+import com.ilovesshan.wjhs.core.exception.TransactionalException;
 import com.ilovesshan.wjhs.mapper.UserMapper;
+import com.ilovesshan.wjhs.service.AccountRecordService;
+import com.ilovesshan.wjhs.service.AccountService;
 import com.ilovesshan.wjhs.service.UserService;
 import com.ilovesshan.wjhs.utils.AesUtils;
 import com.ilovesshan.wjhs.utils.R;
 import com.ilovesshan.wjhs.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +31,12 @@ import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private AccountRecordService accountRecordService;
 
     @Autowired
     private UserMapper userMapper;
@@ -51,10 +63,27 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional(rollbackFor = TransactionalException.class)
     public String create(User user) {
-        // TODO 骑手、回收中心注册账号之后，系统默认充值(骑手200，回收中心5000元)用于支出费用，同时平台每个月也会扣取部分费用(骑手)。
+        // 自动生成一个key(用户ID)
         String userId = UuidUtil.generator();
-        // 自动生成一个key
+
+        // 骑手、回收中心注册账号之后，系统默认充值(骑手1000，回收中心5000元)用于支出费用
+        double balance = Objects.equals("2", user.getUserType()) ? 1000.00 : 5000.00;
+        Account account = new Account(UuidUtil.generator(), user.getUserType(), userId, balance, "15", null, null);
+        accountService.insert(account);
+
+        // admin账户需要扣除费用
+        accountService.updateMoneyWithDecrement("369BCFE480454D22A07A8644F6DF0349", balance);
+
+
+        // 新增账户流水记录
+        AccountRecord accountRecord = new AccountRecord(
+                UuidUtil.generator(), "0", user.getUserType(), "369BCFE480454D22A07A8644F6DF0349", userId,
+                "36", null, balance, "28", "用户注册，系统首次充值", "15", null, null
+        );
+        accountRecordService.insert(accountRecord);
+
         user.setId(userId);
         // 对密码加密 存数据库
         user.setPassword(AesUtils.encrypt(user.getPassword()));

@@ -1,23 +1,23 @@
 package com.ilovesshan.wjhs.beans.dto;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
+
 
 import javax.validation.constraints.*;
 
 
 @Data
 public class RecycleGoodsCreateDto {
-    @NotBlank(message = "回收商品ID不能为空")
+    @NotBlank(message ="回收商品ID不能为空")
     private String typeId;
 
-    @NotBlank (message = "回收商品名称不能为空")
+    @NotBlank(message = "回收商品名称不能为空")
     @Size(min = 2, max = 8, message = "回收商品名称长度在2到8个字符之间")
     private String name;
 
     private String describe;
 
-    @NotBlank (message = "回收商品附件ID不能为空")
+    @NotBlank(message = "回收商品附件ID不能为空")
     private String attachmentId;
 
     @Min(value = 1, message = "兑换积分最小不能低于1")

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ilovesshan.wjhs.mapper.AddressMapper">
+
+    <sql id="allColumns">
+        `id`, `detail_address`, `area`, `city`, `province`, `phone`, `user_name`, `longitude`, `latitude`, `is_default`, `is_delete`, `create_time`, `update_time`
+    </sql>
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`address` (`id`, `detail_address`, `area`, `city`, `province`, `phone`, `user_name`, `longitude`, `latitude`, `is_default`)
+        values
+            (#{id}, #{detailAddress}, #{area}, #{city}, #{province}, #{phone}, #{userName}, #{longitude}, #{latitude}, #{isDefault})
+    </insert>
+
+    <update id="update">
+        update  `wjhs`.`address`
+        <set>
+            <if test="detailAddress != null">
+                `detail_address` = #{detailAddress},
+            </if>
+            <if test="area != null">
+                `area` = #{area},
+            </if>
+            <if test="city != null">
+                `city` = #{city},
+            </if>
+            <if test="province != null">
+                `province` = #{province},
+            </if>
+            <if test="phone != null">
+                `phone` = #{phone},
+            </if>
+            <if test="userName != null">
+                `user_name` = #{userName},
+            </if>
+            <if test="longitude != null">
+                `longitude` = #{longitude},
+            </if>
+            <if test="latitude != null">
+                `latitude` = #{latitude},
+            </if>
+            <if test="isDefault != null">
+                `is_default` = #{isDefault},
+            </if>
+        </set>
+        where id = #{ id }
+    </update>
+    <update id="updateDefaultAddress">
+        update 	`wjhs`.`address` set `is_default` = '19' where  `is_delete` = '15' and `is_default` = '18'
+    </update>
+
+    <delete id="deleteById">
+        update 	`wjhs`.`address` set `is_delete` = '14' where id = #{ id }
+    </delete>
+
+    <select id="selectList" resultType="com.ilovesshan.wjhs.beans.pojo.Address">
+        select
+            a.`id`,  a.`detail_address`,  a.`area`,  a.`city`,  a.`province`,  a.`phone`,  a.`user_name`,  a.`longitude`,  a.`latitude`,  a.`is_default`,  a.`is_delete`,  a.`create_time`,  a.`update_time`,
+            ar.`id` ar_id, ar.`user_id` ar_user_id, ar.`address_id` ar_address_id
+        from
+            `wjhs`.`wx_user_address_rel` ar left join `wjhs`.`address` a on ar.address_id = a.id
+        where ar.user_id = #{ id } and a.is_delete = '15' and ar.is_delete = '15'
+    </select>
+
+    <select id="selectById" resultType="com.ilovesshan.wjhs.beans.pojo.Address">
+        select <include refid="allColumns" /> from 	`wjhs`.`address` where id = #{ id } and `is_delete` = '15'
+    </select>
+
+    <select id="selectRows" resultType="java.lang.Integer">
+        select count(id) from `wjhs`.`address` where `is_delete` = '15'
+    </select>
+</mapper>

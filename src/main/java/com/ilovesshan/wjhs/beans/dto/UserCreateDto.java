@@ -1,8 +1,10 @@
 package com.ilovesshan.wjhs.beans.dto;
 
+import com.ilovesshan.wjhs.utils.RegexpUtil;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
@@ -19,6 +21,6 @@ public class UserCreateDto {
     private String attachmentId;
     private String nickName;
     @NotNull(message = "手机号不能为空")
-    @Size(min = 11, max = 11, message = "请输入正确的手机号码")
+    @Pattern(regexp = RegexpUtil.MOBILE_PHONE_REGEXP, message = "请输入正确手机号")
     private String phone;
 }

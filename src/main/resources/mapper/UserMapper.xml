@@ -71,17 +71,8 @@
         select <include refid="allColumns" /> from `user` where username like #{username};
     </select>
 
-
     <resultMap id="userResultMap" type="com.ilovesshan.wjhs.beans.pojo.User" autoMapping="true">
-        <association property="attachment" javaType="com.ilovesshan.wjhs.beans.pojo.Attachment" autoMapping="true">
-            <id column="a_id" property="id"/>
-            <result column="a_url" property="url"/>
-            <result column="a_create_by_user_id" property="createByUserId"/>
-            <result column="a_create_by_user_name" property="createByUserName"/>
-            <result column="a_create_by_user_type" property="createByUserType"/>
-            <result column="a_create_time" property="createTime"/>
-            <result column="a_update_time" property="updateTime"/>
-        </association>
+        <association property="attachment" javaType="com.ilovesshan.wjhs.beans.pojo.Attachment" autoMapping="true" columnPrefix="a_" />
     </resultMap>
 
     <select id="findUserById"  resultMap="userResultMap">

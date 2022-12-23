@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ilovesshan.wjhs.mapper.AccountRecordMapper">
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`account_record` (`id`, `user_type_from`, `user_type_to`, `user_id_from`, `user_id_to`, `pay_status`, `trading_id`, `trading_money`, `trading_type`, `trading_note`, `is_delete`)
+        values
+            (#{id}, #{userTypeFrom}, #{userTypeTo}, #{userIdFrom}, #{userIdTo}, #{payStatus}, #{tradingId}, #{tradingMoney}, #{tradingType}, #{tradingNote}, #{isDelete});
+    </insert>
+</mapper>
