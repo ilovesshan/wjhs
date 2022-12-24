@@ -1,11 +1,13 @@
 package com.ilovesshan.wjhs.service.impl;
 
 import com.ilovesshan.wjhs.beans.pojo.Account;
+import com.ilovesshan.wjhs.beans.pojo.WxIntegral;
 import com.ilovesshan.wjhs.beans.pojo.WxUser;
 import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.core.exception.TransactionalException;
 import com.ilovesshan.wjhs.mapper.WxUserMapper;
 import com.ilovesshan.wjhs.service.AccountService;
+import com.ilovesshan.wjhs.service.WxIntegralService;
 import com.ilovesshan.wjhs.service.WxUserService;
 import com.ilovesshan.wjhs.utils.R;
 import com.ilovesshan.wjhs.utils.UuidUtil;
@@ -32,6 +34,9 @@ public class WxUserServiceImpl implements WxUserService {
     private AccountService accountService;
 
     @Autowired
+    private WxIntegralService wxIntegralService;
+
+    @Autowired
     private WxUserMapper userMapper;
 
     @Override
@@ -42,10 +47,15 @@ public class WxUserServiceImpl implements WxUserService {
     @Override
     @Transactional(rollbackFor = TransactionalException.class)
     public boolean insert(WxUser wxUser) {
-        // 给当前用户初始化一个账户
+        // 初始化用户余额账户 余额0
         Account account = new Account(UuidUtil.generator(), "1", wxUser.getId(), 0, "15", null, null);
         accountService.insert(account);
 
+        // 初始化用户积分账户 积分0
+        WxIntegral integral = new WxIntegral(UuidUtil.generator(), wxUser.getId(), 0, "15", null, null);
+        wxIntegralService.insert(integral);
+
+        // 新增用户
         return userMapper.insert(wxUser) > 0;
     }
 

@@ -24,4 +24,9 @@ public class AccountRecordServiceImpl implements AccountRecordService {
     public boolean insert(AccountRecord accountRecord) {
        return accountRecordMapper.insert(accountRecord) > 0;
     }
+
+    @Override
+    public AccountRecord selectByOrderId(String orderId) {
+        return accountRecordMapper.selectByOrderId(orderId);
+    }
 }

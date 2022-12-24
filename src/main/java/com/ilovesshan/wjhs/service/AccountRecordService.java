@@ -11,4 +11,6 @@ import com.ilovesshan.wjhs.beans.pojo.AccountRecord;
  */
 public interface AccountRecordService {
     boolean insert(AccountRecord accountRecord);
+
+    AccountRecord selectByOrderId(String orderId);
 }

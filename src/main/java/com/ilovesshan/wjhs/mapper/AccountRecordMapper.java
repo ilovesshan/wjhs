@@ -14,4 +14,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AccountRecordMapper {
     int insert(AccountRecord accountRecord);
+
+    AccountRecord selectByOrderId(String orderId);
 }

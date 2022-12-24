@@ -103,4 +103,12 @@ public class RecycleOrderController {
         return isSuccess ? R.success(R.SUCCESS_MESSAGE_UPDATE) : R.fail(R.ERROR_MESSAGE_UPDATE);
     }
 
+
+    @Log(businessModule = "回收商品订单模块", businessType = "POST", businessDescribe = "订单支付")
+    @ApiOperation("订单支付")
+    @PostMapping("/pay/{orderId}")
+    public R orderPay(@PathVariable String orderId) {
+        boolean isSuccess = wxRecycleOrderService.orderPay(orderId);
+        return isSuccess ? R.success(R.SUCCESS_MESSAGE) : R.fail(R.ERROR_MESSAGE);
+    }
 }

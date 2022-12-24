@@ -26,4 +26,6 @@ public interface WxRecycleOrderService {
     List<RecycleOrder> commonConditionsSelectHandlerList(List<RecycleOrder> recycleOrders);
 
     RecycleOrder commonConditionsSelectHandlerSingle(RecycleOrder recycleOrder);
+
+    boolean orderPay(String orderId);
 }

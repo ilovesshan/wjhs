@@ -1,17 +1,12 @@
 package com.ilovesshan.wjhs.service.impl;
 
 import com.ilovesshan.wjhs.beans.dto.RecycleOrderUpdateDto;
-import com.ilovesshan.wjhs.beans.pojo.Attachment;
-import com.ilovesshan.wjhs.beans.pojo.RecycleOrder;
-import com.ilovesshan.wjhs.beans.pojo.RecycleOrderDetail;
-import com.ilovesshan.wjhs.beans.pojo.User;
+import com.ilovesshan.wjhs.beans.pojo.*;
 import com.ilovesshan.wjhs.core.base.UserCache;
 import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.core.exception.TransactionalException;
 import com.ilovesshan.wjhs.mapper.RecycleOrderMapper;
-import com.ilovesshan.wjhs.service.AttachmentService;
-import com.ilovesshan.wjhs.service.UserService;
-import com.ilovesshan.wjhs.service.WxRecycleOrderService;
+import com.ilovesshan.wjhs.service.*;
 import com.ilovesshan.wjhs.utils.R;
 import com.ilovesshan.wjhs.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +40,22 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private WxIntegralService wxIntegralService;
+
+    @Autowired
+    private WxIntegralRecordService wxIntegralRecordService;
+
+    @Autowired
+    private AccountRecordService accountRecordService;
+
+    @Autowired
+    private RecycleStatisticalService recycleStatisticalService;
+
 
     @Override
     public RecycleOrder selectById(String id) {
@@ -137,5 +148,62 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
         List<RecycleOrderDetail> recycleOrderDetails = recycleOrderDetailService.selectListByOrderId(recycleOrder.getId());
         recycleOrder.setRecycleOrderDetails(recycleOrderDetails);
         return recycleOrder;
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = TransactionalException.class)
+    public boolean orderPay(String orderId) {
+        // 订单支付业务逻辑
+
+        // 1、查询当前订单信息
+        RecycleOrder findRecycleOrder = selectById(orderId);
+
+        // 2、查询该条订单是否有效
+        AccountRecord findAccountRecord = accountRecordService.selectByOrderId(orderId);
+
+        if (!Objects.equals(findRecycleOrder.getStatus(), "6") || !Objects.isNull(findAccountRecord)) {
+            throw new CustomException("订单信息无效");
+        }
+
+        // 3、账户进账和出账
+        String submitUserId = findRecycleOrder.getSubmitUserId();
+        String receiveUserId = findRecycleOrder.getReceiveUserId();
+        double tradingMoney = findRecycleOrder.getTradingMoney();
+        double totalIntegral = findRecycleOrder.getTotalIntegral();
+        double totalWeight = findRecycleOrder.getTotalWeight();
+        // 确定订单交易类型
+        String orderType = findRecycleOrder.getOrderType();
+        String userTypeFrom = Objects.equals(orderType, "10") ? "1" : "2";
+        String userTypeTo = Objects.equals(orderType, "10") ? "2" : "3";
+        accountService.updateMoneyWithIncrement(submitUserId, tradingMoney);
+        accountService.updateMoneyWithDecrement(receiveUserId, tradingMoney);
+
+        // 生成账户流水
+        AccountRecord accountRecord = new AccountRecord(
+                UuidUtil.generator(), userTypeFrom, userTypeTo, submitUserId, receiveUserId,
+                "36", orderId, tradingMoney, "28", null, "15", null, null
+        );
+        accountRecordService.insert(accountRecord);
+
+
+        // 4、用户增加积分(如果是当前交易类型是用户到骑手)
+        if (Objects.equals(orderType, "10")) {
+            wxIntegralService.updateMoneyWithIncrement(submitUserId, totalIntegral);
+            // 生成积分流水
+            WxIntegralRecord wxIntegralRecord = new WxIntegralRecord(UuidUtil.generator(), submitUserId, orderId, "36", totalIntegral, "15", null, null);
+            wxIntegralRecordService.insert(wxIntegralRecord);
+        }
+
+        // 5、增加回收统计记录
+        RecycleStatistical recycleStatistical = new RecycleStatistical(UuidUtil.generator(), orderId, submitUserId, receiveUserId, totalWeight, orderType, null, null, null);
+        recycleStatisticalService.insert(recycleStatistical);
+
+        // 6、更改订单状态(已完成)
+        RecycleOrderUpdateDto orderUpdateDto = new RecycleOrderUpdateDto();
+        orderUpdateDto.setId(orderId);
+        orderUpdateDto.setStatus("7");
+        orderUpdateDto.setReceiveUserId(receiveUserId);
+        return updateOrderStatus(orderUpdateDto);
     }
 }

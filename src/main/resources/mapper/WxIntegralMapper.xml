@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ilovesshan.wjhs.mapper.WxIntegralMapper">
+
+    <sql id="allColumns">
+        `id`, `user_id`, `integral`, `is_delete`, `create_time`, `update_time`
+    </sql>
+
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`wx_integral` (`id`, `user_id`, `integral`)
+        values
+            (#{id}, #{userId}, #{integral});
+    </insert>
+
+
+    <update id="updateMoneyWithIncrement">
+        update  `wjhs`.`wx_integral` set integral = integral + #{integral} where user_id = #{userId}
+    </update>
+
+    <update id="updateMoneyWithDecrement">
+        update  `wjhs`.`wx_integral` set integral = integral - #{integral} where user_id = #{userId}
+    </update>
+
+</mapper>

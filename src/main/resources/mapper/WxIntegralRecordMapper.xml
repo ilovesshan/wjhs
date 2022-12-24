@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ilovesshan.wjhs.mapper.WxIntegralRecordMapper">
+
+    <sql id="allColumns">
+        `id`, `user_id`, `order_id`, `pay_status`, `trading_integral`, `is_delete`, `create_time`, `update_time`
+    </sql>
+
+
+    <insert id="insert">
+        insert into
+            `wjhs`.`wx_integral_record` (`id`, `user_id`, `order_id`, `pay_status`, `trading_integral`)
+        values
+            (#{id}, #{userId}, #{orderId}, #{payStatus}, #{tradingIntegral});
+    </insert>
+
+</mapper>
