@@ -7,6 +7,7 @@ import com.ilovesshan.wjhs.core.exception.CustomException;
 import com.ilovesshan.wjhs.core.exception.TransactionalException;
 import com.ilovesshan.wjhs.mapper.RecycleOrderMapper;
 import com.ilovesshan.wjhs.service.*;
+import com.ilovesshan.wjhs.utils.JPushUtil;
 import com.ilovesshan.wjhs.utils.R;
 import com.ilovesshan.wjhs.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,6 +51,9 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
 
     @Autowired
     private AccountRecordService accountRecordService;
+
+    @Autowired
+    private AddressService addressService;
 
     @Autowired
     private RecycleStatisticalService recycleStatisticalService;
@@ -107,7 +109,18 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
 
         // 向订单表插入数据
         recycleOrder.setId(orderId);
-        return recycleOrderMapper.insert(recycleOrder) > 0;
+        boolean createSuccess = recycleOrderMapper.insert(recycleOrder) > 0;
+
+        // 通过激光推送将新的订单消息 推送到骑手APP中
+        Map<String, String> pushParams = new HashMap<>();
+        Address address = addressService.selectById(recycleOrder.getAddressId());
+        String addressStr = address.getCity() + address.getArea() + address.getDetailAddress();
+        //设置提示信息,内容是文章标题
+        pushParams.put("msg", addressStr + "发出一条新增订单,点击查看详情!");
+        pushParams.put("title", "一条新的订单信息");
+        pushParams.put("alias", "new_order");
+        JPushUtil.jpushAndroid(pushParams);
+        return createSuccess;
     }
 
     @Override
