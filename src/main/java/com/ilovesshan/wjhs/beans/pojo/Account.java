@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +15,7 @@ public class Account {
     private String userType;
     private String userId;
     private double balance;
+    private List<AccountRecord> accountRecords;
     private String isDelete;
     private Date createTime;
     private Date updateTime;

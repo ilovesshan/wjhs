@@ -48,7 +48,7 @@ public class WxUserServiceImpl implements WxUserService {
     @Transactional(rollbackFor = TransactionalException.class)
     public boolean insert(WxUser wxUser) {
         // 初始化用户余额账户 余额0
-        Account account = new Account(UuidUtil.generator(), "1", wxUser.getId(), 0, "15", null, null);
+        Account account = new Account(UuidUtil.generator(), "1", wxUser.getId(), 0, null, "15", null, null);
         accountService.insert(account);
 
         // 初始化用户积分账户 积分0

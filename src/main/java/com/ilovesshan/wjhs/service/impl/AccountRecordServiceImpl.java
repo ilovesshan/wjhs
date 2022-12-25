@@ -6,6 +6,8 @@ import com.ilovesshan.wjhs.service.AccountRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -28,5 +30,10 @@ public class AccountRecordServiceImpl implements AccountRecordService {
     @Override
     public AccountRecord selectByOrderId(String orderId) {
         return accountRecordMapper.selectByOrderId(orderId);
+    }
+
+    @Override
+    public List<AccountRecord> selectListByUserId(String userId) {
+        return accountRecordMapper.selectListByUserId(userId);
     }
 }

@@ -19,4 +19,6 @@ public interface AccountMapper {
     int updateMoneyWithDecrement(@Param("userId") String userId, @Param("balance") double balance);
 
     int updateMoneyWithIncrement(@Param("userId") String userId, @Param("balance") double balance);
+
+    Account selectByUserId(String userId);
 }

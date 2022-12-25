@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
         // 骑手、回收中心注册账号之后，系统默认充值(骑手1000，回收中心5000元)用于支出费用
         double balance = Objects.equals("2", user.getUserType()) ? 1000.00 : 5000.00;
-        Account account = new Account(UuidUtil.generator(), user.getUserType(), userId, balance, "15", null, null);
+        Account account = new Account(UuidUtil.generator(), user.getUserType(), userId, balance, null, "15", null, null);
         accountService.insert(account);
 
         // admin账户需要扣除费用
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
         // 新增账户流水记录
         AccountRecord accountRecord = new AccountRecord(
-                UuidUtil.generator(), "0", user.getUserType(), "369BCFE480454D22A07A8644F6DF0349", userId,
+                UuidUtil.generator(), user.getUserType(), "0", userId, "369BCFE480454D22A07A8644F6DF0349",
                 "36", null, balance, "28", "用户注册，系统首次充值", "15", null, null
         );
         accountRecordService.insert(accountRecord);

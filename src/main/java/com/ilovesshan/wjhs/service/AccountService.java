@@ -1,6 +1,7 @@
 package com.ilovesshan.wjhs.service;
 
 import com.ilovesshan.wjhs.beans.pojo.Account;
+import com.ilovesshan.wjhs.beans.pojo.AccountRecord;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,4 +16,8 @@ public interface AccountService {
     boolean updateMoneyWithDecrement(String userId, double balance);
 
     boolean updateMoneyWithIncrement(String userId, double balance);
+
+    Account selectByUserId(String id);
+
+    boolean updateAccountBalance(AccountRecord accountRecord);
 }
