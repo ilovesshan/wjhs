@@ -15,4 +15,28 @@
             (#{id}, #{orderId}, #{submitUserId}, #{receiveUserId}, #{weight}, #{orderType});
     </insert>
 
+
+    <select id="selectListByType" resultType="com.ilovesshan.wjhs.beans.pojo.RecycleStatistical">
+        select <include refid="allColumns" />
+        from `wjhs`.`recycle_statistical`
+        <where>
+            <if test="userType == 0 or userType == 3 ">
+                receive_user_id = #{userId}
+            </if>
+
+            <if test="userType == 1 ">
+                submit_user_id = #{userId}
+            </if>
+
+            <if test="orderType == 10 and userType == 2 ">
+                receive_user_id = #{userId}
+            </if>
+
+            <if test="orderType == 11 and userType == 2 ">
+                submit_user_id = #{userId}
+            </if>
+
+            and order_type = #{ orderType } and `is_delete` = '15'
+        </where>
+    </select>
 </mapper>
