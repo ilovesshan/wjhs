@@ -26,7 +26,8 @@
     <select id="selectListByUserId" resultType="com.ilovesshan.wjhs.beans.pojo.AccountRecord">
         select <include refid="allColumns" />
         from `wjhs`.`account_record`
-        where user_id_from = #{ id } or user_id_to = #{ id }
+        where (user_id_from = #{ id } or user_id_to = #{ id })
+        and is_delete = '15'
         order by create_time desc
     </select>
 

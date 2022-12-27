@@ -25,4 +25,12 @@
         update  `wjhs`.`wx_integral` set integral = integral - #{integral} where user_id = #{userId}
     </update>
 
+    <select id="selectByUserId" resultType="com.ilovesshan.wjhs.beans.pojo.WxIntegral">
+        select <include refid="allColumns" />
+        from `wjhs`.`wx_integral`
+        where user_id = #{ userId }
+        and is_delete = '15'
+        order by create_time desc
+    </select>
+
 </mapper>

@@ -1,7 +1,9 @@
 package com.ilovesshan.wjhs.beans.converter;
 
 import com.ilovesshan.wjhs.beans.pojo.Account;
+import com.ilovesshan.wjhs.beans.pojo.UserAccount;
 import com.ilovesshan.wjhs.beans.vo.AccountVo;
+import com.ilovesshan.wjhs.beans.vo.UserAccountVo;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -18,4 +20,6 @@ import org.springframework.stereotype.Component;
 public interface AccountConverter {
 
     AccountVo po2vo(Account account);
+
+    UserAccountVo po2vo(UserAccount userAccount);
 }

@@ -6,6 +6,8 @@ import com.ilovesshan.wjhs.service.WxIntegralRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -23,5 +25,10 @@ public class WxIntegralRecordServiceImpl implements WxIntegralRecordService{
     @Override
     public boolean insert(WxIntegralRecord integralRecord) {
         return wxIntegralRecordMapper.insert(integralRecord) > 0;
+    }
+
+    @Override
+    public List<WxIntegralRecord> selectListByUserId(String userId) {
+        return wxIntegralRecordMapper.selectListByUserId(userId);
     }
 }

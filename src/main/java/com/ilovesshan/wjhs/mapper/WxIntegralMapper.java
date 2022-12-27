@@ -20,4 +20,7 @@ public interface WxIntegralMapper {
     int updateMoneyWithIncrement(@Param("userId") String submitUserId, @Param("integral") double totalIntegral);
 
     int updateMoneyWithDecrement(@Param("userId") String submitUserId, @Param("integral") double totalIntegral);
+
+    WxIntegral selectByUserId(String userId);
+
 }

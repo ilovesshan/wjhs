@@ -2,6 +2,9 @@ package com.ilovesshan.wjhs.service;
 
 import com.ilovesshan.wjhs.beans.pojo.Account;
 import com.ilovesshan.wjhs.beans.pojo.AccountRecord;
+import com.ilovesshan.wjhs.beans.pojo.UserAccount;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,4 +23,6 @@ public interface AccountService {
     Account selectByUserId(String id);
 
     boolean updateAccountBalance(AccountRecord accountRecord);
+
+    List<UserAccount>  selectListByType(String type);
 }

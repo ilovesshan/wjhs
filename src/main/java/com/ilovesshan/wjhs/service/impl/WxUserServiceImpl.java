@@ -52,7 +52,7 @@ public class WxUserServiceImpl implements WxUserService {
         accountService.insert(account);
 
         // 初始化用户积分账户 积分0
-        WxIntegral integral = new WxIntegral(UuidUtil.generator(), wxUser.getId(), 0, "15", null, null);
+        WxIntegral integral = new WxIntegral(UuidUtil.generator(), wxUser.getId(), 0,  null,"15", null, null);
         wxIntegralService.insert(integral);
 
         // 新增用户

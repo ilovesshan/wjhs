@@ -2,6 +2,8 @@ package com.ilovesshan.wjhs.service;
 
 import com.ilovesshan.wjhs.beans.pojo.WxIntegralRecord;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -11,4 +13,6 @@ import com.ilovesshan.wjhs.beans.pojo.WxIntegralRecord;
  */
 public interface WxIntegralRecordService {
     boolean insert(WxIntegralRecord integralRecord);
+
+    List<WxIntegralRecord> selectListByUserId(String userId);
 }

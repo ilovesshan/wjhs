@@ -16,4 +16,12 @@
             (#{id}, #{userId}, #{orderId}, #{payStatus}, #{tradingIntegral});
     </insert>
 
+    <select id="selectListByUserId" resultType="com.ilovesshan.wjhs.beans.pojo.WxIntegralRecord">
+        select <include refid="allColumns" />
+        from `wjhs`.`wx_integral_record`
+        where user_id = #{ userId }
+        and is_delete = '15'
+        order by create_time desc
+    </select>
+
 </mapper>
