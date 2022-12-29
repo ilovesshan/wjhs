@@ -17,7 +17,7 @@ public interface UserFeedbackService {
 
     List<UserFeedback> selectListByUserId(String userId);
 
-    List<UserFeedback> selectListByType(String type);
+    List<UserFeedback> selectListByType(String userType, String isSolve);
 
     boolean create(UserFeedbackDto userFeedbackDto);
 

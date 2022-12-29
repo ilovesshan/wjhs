@@ -47,8 +47,8 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     }
 
     @Override
-    public List<UserFeedback> selectListByType(String type) {
-        return userFeedbackMapper.selectListByType(type);
+    public List<UserFeedback> selectListByType(String userType, String isSolve) {
+        return userFeedbackMapper.selectListByType(userType, isSolve);
     }
 
     @Override

@@ -48,9 +48,13 @@
 
     <select id="selectListByType" resultMap="UserFeedbackResultMap">
         <include refid="commonSelect" />
-            where
-                uf.is_delete = '15'
+            <where>
+                <if test="isSolve != '' and isSolve != null ">
+                    is_solve = #{ isSolve }
+                </if>
+                and uf.is_delete = '15'
                 and user_type = #{ userType }
+            </where>
             order by create_time desc
     </select>
 

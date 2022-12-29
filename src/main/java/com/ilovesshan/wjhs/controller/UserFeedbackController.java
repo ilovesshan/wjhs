@@ -46,8 +46,8 @@ public class UserFeedbackController {
 
     @ApiOperation("根据用户类型获取反馈列表")
     @GetMapping
-    public R selectListByType(@RequestParam String type) {
-        List<UserFeedback> userFeedbacks = userFeedbackService.selectListByType(type);
+    public R selectListByType(@RequestParam String userType, @RequestParam(required = false) String isSolve) {
+        List<UserFeedback> userFeedbacks = userFeedbackService.selectListByType(userType, isSolve);
         List<UserFeedbackVo> userFeedbackVos = userFeedbackVoParseUtil.parseList(userFeedbacks);
         return R.success(R.SUCCESS_MESSAGE_SELECT, userFeedbackVos);
     }
