@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ilovesshan.wjhs.mapper.UserFeedbackMapper">
+
+    <sql id="allColumns">
+        `id`, `user_id`, `user_type`, `feedback_title`, `feedback_detail`, `attachment_id`, `is_solve`, `is_delete`, `create_time`, `update_time`
+    </sql>
+
+    <!-- 通用查询 关联附件-->
+    <sql id="commonSelect">
+        select
+            uf.`id`, uf.`user_id`, uf.`user_type`, uf.`feedback_title`, uf.`feedback_detail`, uf.`attachment_id`, uf.`is_solve`, uf.`is_delete`, uf.`create_time`, uf.`update_time` ,
+            a.id a_id , a.url a_url, a.create_by_user_id a_create_by_user_id, a.create_by_user_name a_create_by_user_name, a.create_by_user_type a_create_by_user_type, a.is_delete a_is_delete, a.create_time a_create_time, a.update_time a_update_time
+        from `wjhs`.`user_feedback` uf
+                 left join  `wjhs`.`attachment` a on uf.attachment_id = a.id
+    </sql>
+
+    <update id="create">
+        INSERT INTO
+            `wjhs`.`user_feedback` (`id`, `user_id`, `user_type`, `feedback_title`, `feedback_detail`, `attachment_id`)
+        VALUES
+            (#{id}, #{userId}, #{userType}, #{feedbackTitle}, #{feedbackDetail}, #{attachmentId});
+    </update>
+
+    <update id="updateIsSolveDone">
+        update `wjhs`.`user_feedback` set is_solve = '38' where id = #{ id } and is_solve = '37'
+    </update>
+
+    <delete id="deleteById">
+        update `wjhs`.`user_feedback` set is_delete = '16' where id = #{ id }
+    </delete>
+
+
+    <resultMap id="UserFeedbackResultMap" type="com.ilovesshan.wjhs.beans.pojo.UserFeedback" autoMapping="true">
+        <association property="attachment" javaType="com.ilovesshan.wjhs.beans.pojo.Attachment" autoMapping="true" columnPrefix="a_"/>
+    </resultMap>
+
+
+    <select id="selectListByUserId" resultMap="UserFeedbackResultMap">
+        <include refid="commonSelect" />
+        where
+            uf.is_delete = '15'
+            and user_id = #{ userId }
+        order by create_time desc
+    </select>
+
+    <select id="selectListByType" resultMap="UserFeedbackResultMap">
+        <include refid="commonSelect" />
+            where
+                uf.is_delete = '15'
+                and user_type = #{ userType }
+            order by create_time desc
+    </select>
+
+    <select id="selectById"  resultMap="UserFeedbackResultMap">
+        <include refid="commonSelect" />
+        where
+            uf.is_delete = '15'
+            and uf.id = #{ id }
+    </select>
+</mapper>
