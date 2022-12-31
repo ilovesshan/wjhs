@@ -13,6 +13,7 @@ public class RecycleOrderVo {
     private String receiveUserId;
     private String orderType;
     private String status;
+    private String sendToRecycleCenter;
     private double tradingMoney;
     private double totalWeight;
     private double totalIntegral;
@@ -30,4 +31,7 @@ public class RecycleOrderVo {
     private String isDelete;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateTime;
 }

@@ -12,6 +12,7 @@ public class RecycleOrder {
     private String receiveUserId;
     private String orderType;
     private String status;
+    private String sendToRecycleCenter;
     private double tradingMoney;
     private double totalWeight;
     private double totalIntegral;

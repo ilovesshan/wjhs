@@ -1,6 +1,7 @@
 package com.ilovesshan.wjhs.service.impl;
 
 import com.ilovesshan.wjhs.beans.pojo.RecycleOrder;
+import com.ilovesshan.wjhs.core.base.UserCache;
 import com.ilovesshan.wjhs.mapper.RecycleOrderMapper;
 import com.ilovesshan.wjhs.service.RecycleOrderService;
 import com.ilovesshan.wjhs.service.WxRecycleOrderService;
@@ -27,7 +28,7 @@ public class RecycleOrderServiceImpl implements RecycleOrderService {
 
     @Override
     public List<RecycleOrder> selectListByStatusAndOrderType(String status, String orderType) {
-        List<RecycleOrder> recycleOrders = recycleOrderMapper.selectListByStatusAndOrderType(orderType, status);
+        List<RecycleOrder> recycleOrders = recycleOrderMapper.selectListByStatusAndOrderType(orderType, status, UserCache.get("userType"));
         return wxRecycleOrderService.commonConditionsSelectHandlerList(recycleOrders);
     }
 

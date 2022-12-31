@@ -28,4 +28,6 @@ public interface WxRecycleOrderService {
     RecycleOrder commonConditionsSelectHandlerSingle(RecycleOrder recycleOrder);
 
     boolean orderPay(String orderId);
+
+    boolean sendRecycleGoodsOrderToRecycleCenter(String orderId, String receiveUserId);
 }

@@ -50,7 +50,8 @@ public class RecycleOrderController {
                 break;
             case "2":
                 // 我发出的订单  orderType=11(骑手到回收中心)、userId(与我相关的订单信息)
-                recycleOrders = recycleOrderService.selectListByOrderTypeAndUserId("11", UserCache.get("userId"));
+                // recycleOrders = recycleOrderService.selectListByOrderTypeAndUserId("11", UserCache.get("userId"));
+                recycleOrders = recycleOrderService.selectListByStatusAndOrderTypeAndUserId(status, "11", UserCache.get("userId"));
                 break;
             default:
                 // 查询全部  status=4(待接单)、orderType=10(用户到骑手)
@@ -62,9 +63,9 @@ public class RecycleOrderController {
 
     @ApiOperation("查询回收中心相关的订单列表")
     @GetMapping("/recycleCenter")
-    public R selectListByStatus() {
-        // orderType=11(骑手到回收中心)、 status=7(已完结)
-        List<RecycleOrder> recycleOrders = recycleOrderService.selectListByStatusAndOrderType("7", "11");
+    public R selectListByStatus( @RequestParam String status) {
+        // orderType=11(骑手到回收中心)、 status=6(进行中), 7(已完结)
+        List<RecycleOrder> recycleOrders = recycleOrderService.selectListByStatusAndOrderType(status, "11");
         return R.success(R.SUCCESS_MESSAGE_SELECT, orderVoParseUtil.parseList(recycleOrders));
     }
 
@@ -101,6 +102,15 @@ public class RecycleOrderController {
     public R update(@Validated @RequestBody RecycleOrderUpdateDto recycleOrderUpdateDto) {
         boolean isSuccess = wxRecycleOrderService.updateOrderStatus(recycleOrderUpdateDto);
         return isSuccess ? R.success(R.SUCCESS_MESSAGE_UPDATE) : R.fail(R.ERROR_MESSAGE_UPDATE);
+    }
+
+
+    @Log(businessModule = "回收商品订单模块", businessType = "PUT", businessDescribe = "订单送至回收中心")
+    @ApiOperation("订单送至回收中心")
+    @PutMapping("/{id}")
+    public R sendRecycleGoodsOrderToRecycleCenter(@PathVariable("id") String orderId, @RequestParam("receiveUserId") String receiveUserId) {
+        boolean isSuccess = wxRecycleOrderService.sendRecycleGoodsOrderToRecycleCenter(orderId, receiveUserId);
+        return isSuccess ? R.success(R.ERROR_MESSAGE_UPDATE) : R.fail(R.ERROR_MESSAGE_UPDATE);
     }
 
 

@@ -77,7 +77,7 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
         }
 
         // 再根据相关状态查询订单
-        List<RecycleOrder> recycleOrders = recycleOrderMapper.selectListByStatusAndOrderType("10", status);
+        List<RecycleOrder> recycleOrders = recycleOrderMapper.selectListByStatusAndOrderType("10", status, UserCache.get("userType"));
         return commonConditionsSelectHandlerList(recycleOrders);
     }
 
@@ -111,7 +111,7 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
         recycleOrder.setId(orderId);
         boolean createSuccess = recycleOrderMapper.insert(recycleOrder) > 0;
 
-        // 通过激光推送将新的订单消息 推送到骑手APP中
+        // 通过极光推送将新的订单消息 推送到骑手APP中
         Map<String, String> pushParams = new HashMap<>();
         Address address = addressService.selectById(recycleOrder.getAddressId());
         String addressStr = address.getCity() + address.getArea() + address.getDetailAddress();
@@ -218,5 +218,45 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
         orderUpdateDto.setStatus("7");
         orderUpdateDto.setReceiveUserId(receiveUserId);
         return updateOrderStatus(orderUpdateDto);
+    }
+
+    @Override
+    @Transactional(rollbackFor = TransactionalException.class)
+    public boolean sendRecycleGoodsOrderToRecycleCenter(String orderId, String receiveUserId) {
+        String generatorOrderId = UuidUtil.generator();
+
+        RecycleOrder recycleOrder = selectById(orderId);
+        // 更新旧订单状态(标识该订单已经送往回收中心)
+        recycleOrderMapper.updateOrderStatusWithSendToRecycleCenter(orderId);
+
+        // 向订单详情表插入数据
+        List<RecycleOrderDetail> recycleOrderDetails = recycleOrder.getRecycleOrderDetails().stream().peek(order -> {
+            // 设置关联的订单ID以及数据ID
+            order.setId(UuidUtil.generator());
+            order.setOrderId(generatorOrderId);
+        }).collect(Collectors.toList());
+        recycleOrderDetailService.insert(recycleOrderDetails);
+
+        // 生成新的订单ID
+        recycleOrder.setId(generatorOrderId);
+        // 将订单送至回收中心(改变订单信息)
+        recycleOrder.setOrderType("11");
+
+        recycleOrder.setSubmitUserId(UserCache.get("userId"));
+        recycleOrder.setReceiveUserId(receiveUserId);
+        // 订单状态 待结算
+        recycleOrder.setStatus("6");
+        // 按照骑手回收价格计算金额
+        double recyclePrice = 0.0;
+        for (RecycleOrderDetail recycleOrderDetail : recycleOrder.getRecycleOrderDetails()) {
+            recyclePrice += recycleOrderDetail.getWeight() * recycleOrderDetail.getRecycleGoods().getDriverPrice();
+        }
+        recycleOrder.setTradingMoney(recyclePrice);
+        // 订单积分
+        recycleOrder.setTotalIntegral(0);
+        // 预约时间
+        recycleOrder.setAppointmentBeginTime(new Date());
+        recycleOrder.setAppointmentEndTime(new Date());
+        return recycleOrderMapper.insert(recycleOrder) > 0;
     }
 }

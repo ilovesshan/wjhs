@@ -26,9 +26,11 @@ public interface RecycleOrderMapper {
 
     int updateOrderStatus(@Param("id") String id, @Param("status") String status, @Param("receiveUserId") String receiveUserId);
 
-    List<RecycleOrder> selectListByStatusAndOrderType(@Param("orderType") String orderType, @Param("status") String status);
+    List<RecycleOrder> selectListByStatusAndOrderType(@Param("orderType") String orderType, @Param("status") String status, @Param("userType") String userType);
 
     List<RecycleOrder> selectListByOrderTypeAndUserId(@Param("orderType") String orderType, @Param("userId") String userId);
 
     List<RecycleOrder> selectListByStatusAndOrderTypeAndUserId(@Param("status") String status, @Param("orderType") String orderType, @Param("userId") String userId);
+
+    void updateOrderStatusWithSendToRecycleCenter(String orderId);
 }
