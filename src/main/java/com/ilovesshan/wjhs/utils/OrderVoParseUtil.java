@@ -45,7 +45,7 @@ public class OrderVoParseUtil {
 
     public RecycleOrderVo parseSingle(RecycleOrder recycleOrder) {
         RecycleOrderVo recycleOrderVo = recycleOrderConverter.po2vo(recycleOrder);
-        // 解析骑手信息
+        // 解析接单用户信息
         if (StringUtils.hasText(recycleOrder.getReceiveUserId())) {
             User receiveUser = recycleOrder.getReceiveUser();
             Attachment attachment = receiveUser.getAttachment();
@@ -53,6 +53,16 @@ public class OrderVoParseUtil {
             userVo.setAttachment(attachmentConverter.po2vo(attachment));
             recycleOrderVo.setReceiveUser(userVo);
         }
+
+        // 解析下单用户信息
+        if (Objects.equals(recycleOrder.getOrderType(), "11") && StringUtils.hasText(recycleOrder.getReceiveUserId())) {
+            User submitUser = recycleOrder.getSubmitUser();
+            Attachment attachment = submitUser.getAttachment();
+            UserVo userVo = userConverter.po2vo(submitUser);
+            userVo.setAttachment(attachmentConverter.po2vo(attachment));
+            recycleOrderVo.setSubmitUser(userVo);
+        }
+
         // 解析订单商品详情列表
         List<RecycleOrderDetailVo> recycleOrderDetailVos = recycleOrder.getRecycleOrderDetails().stream().map(recycleOrderDetail -> {
             RecycleOrderDetailVo recycleOrderDetailVo = recycleOrderDetailConverter.po2vo(recycleOrderDetail);

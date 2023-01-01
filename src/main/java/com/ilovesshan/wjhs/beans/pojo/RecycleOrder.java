@@ -24,6 +24,7 @@ public class RecycleOrder {
     private List<RecycleOrderDetail> recycleOrderDetails;
     private List<Attachment> attachments ;
     private User receiveUser;
+    private User submitUser;
     private Address address;
     private String isDelete;
     private Date createTime;

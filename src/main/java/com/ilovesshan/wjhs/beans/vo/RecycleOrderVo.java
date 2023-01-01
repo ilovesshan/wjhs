@@ -28,6 +28,7 @@ public class RecycleOrderVo {
     private List<AttachmentVo> attachments;
     private AddressVo address;
     private UserVo receiveUser;
+    private UserVo submitUser;
     private String isDelete;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;

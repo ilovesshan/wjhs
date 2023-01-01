@@ -141,12 +141,18 @@ public class WxRecycleOrderServiceImpl implements WxRecycleOrderService {
     // 订单相关信息的通用查询方法 单个
     @Override
     public RecycleOrder commonConditionsSelectHandlerSingle(RecycleOrder recycleOrder) {
-        // 查询骑手信息
+        // 查询接单用户信息
         String driverId = recycleOrder.getReceiveUserId();
         if (StringUtils.hasText(driverId)) {
             User user = userService.findUserById(driverId);
             recycleOrder.setReceiveUser(user);
         }
+
+        // 查询提交订单用户信息
+        if (Objects.equals(recycleOrder.getOrderType(), "11") && StringUtils.hasText(recycleOrder.getReceiveUserId())) {
+            recycleOrder.setSubmitUser(userService.findUserById(recycleOrder.getSubmitUserId()));
+        }
+
         // 查询订单附件列表
         String noteAttachmentIds = recycleOrder.getNoteAttachmentIds();
         if (StringUtils.hasText(noteAttachmentIds)) {
