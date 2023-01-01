@@ -23,6 +23,28 @@
         update `wjhs`.`account` set balance = balance + #{ balance } where user_id = #{ userId }
     </update>
 
+    <update id="updateMoneyWithDecrementBatch">
+        update
+            `wjhs`.`account` set balance = balance - #{ balance }
+        <where>
+            user_id in
+            <foreach collection="userIds" open="(" close=")" separator="," item="id" >
+                #{id}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="updateMoneyWithIncrementBatch">
+        update
+        `wjhs`.`account` set balance = balance + #{ balance }
+        <where>
+            user_id in
+            <foreach collection="userIds" open="(" close=")" separator="," item="id" >
+                #{id}
+            </foreach>
+        </where>
+    </update>
+
     <select id="selectByUserId" resultType="com.ilovesshan.wjhs.beans.pojo.Account">
         select <include refid="allColumns" /> from  `wjhs`.`account` where  user_id = #{ userId } and is_delete = '15'
     </select>

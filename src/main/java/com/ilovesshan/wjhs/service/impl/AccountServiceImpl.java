@@ -57,8 +57,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public boolean updateMoneyWithDecrementBatch(List<String> userIds, double balance) {
+        return accountMapper.updateMoneyWithDecrementBatch(userIds, balance) > 0;
+    }
+
+    @Override
     public boolean updateMoneyWithIncrement(String userId, double balance) {
         return accountMapper.updateMoneyWithIncrement(userId, balance) > 0;
+    }
+
+    @Override
+    public boolean updateMoneyWithIncrementBatch(List<String> userIds, double balance) {
+        return accountMapper.updateMoneyWithIncrementBatch(userIds, balance) > 0;
     }
 
     @Override
@@ -126,5 +136,25 @@ public class AccountServiceImpl implements AccountService {
             }
         }
         return userAccounts;
+    }
+
+    @Override
+    @Transactional(rollbackFor = TransactionalException.class)
+    public boolean decrementAccountWithDriver(double balance, String tradingNote) {
+        List<User> users = userService.selectListByType("2");
+        User admin = userService.findUserByUsername("admin");
+        for (User user : users) {
+            // 支出账户出账、收入账户进账
+            accountService.updateMoneyWithDecrement(user.getId(), balance);
+            accountService.updateMoneyWithIncrement(admin.getId(), balance);
+
+            // 新增账户流水记录
+            AccountRecord accountRecord = new AccountRecord(
+                    UuidUtil.generator(), "0", "2", admin.getId(), user.getId(), "36", null,
+                    balance, "28", tradingNote, "15", null, null
+            );
+            accountRecordService.insert(accountRecord);
+        }
+        return true;
     }
 }

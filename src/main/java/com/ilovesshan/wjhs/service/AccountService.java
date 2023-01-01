@@ -17,12 +17,16 @@ public interface AccountService {
     boolean insert(Account account);
 
     boolean updateMoneyWithDecrement(String userId, double balance);
-
     boolean updateMoneyWithIncrement(String userId, double balance);
+
+    boolean updateMoneyWithDecrementBatch(List<String> userIds, double balance);
+    boolean updateMoneyWithIncrementBatch(List<String> userIds, double balance);
 
     Account selectByUserId(String id);
 
     boolean updateAccountBalance(AccountRecord accountRecord);
 
     List<UserAccount>  selectListByType(String type);
+
+    boolean decrementAccountWithDriver(double balance, String tradingNote);
 }

@@ -55,6 +55,13 @@ public class AccountController {
         return R.success(R.SUCCESS_MESSAGE_SELECT, accountVo);
     }
 
+//    @ApiOperation("平台每个月扣取手续费用(骑手)")
+//    @PutMapping("/decrementAccountWithDriver")
+//    public R decrementAccountWithDriver() {
+//        boolean isSuccess = accountService.decrementAccountWithDriver(200, "平台端每月手续费扣取");
+//        return isSuccess ? R.success(R.SUCCESS_MESSAGE_UPDATE) : R.fail(R.ERROR_MESSAGE_UPDATE);
+//    }
+
     @ApiOperation("根据类型查询用户账户余额和流水记录列表")
     @GetMapping
     public R selectListByType(@RequestParam("type") String type) {

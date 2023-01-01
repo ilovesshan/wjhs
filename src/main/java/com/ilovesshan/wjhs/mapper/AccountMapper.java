@@ -4,6 +4,8 @@ import com.ilovesshan.wjhs.beans.pojo.Account;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -21,4 +23,8 @@ public interface AccountMapper {
     int updateMoneyWithIncrement(@Param("userId") String userId, @Param("balance") double balance);
 
     Account selectByUserId(String userId);
+
+    int updateMoneyWithDecrementBatch(@Param("userIds")List<String> userIds, @Param("balance")double balance);
+
+    int updateMoneyWithIncrementBatch(@Param("userIds")List<String> userIds, @Param("balance")double balance);
 }

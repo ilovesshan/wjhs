@@ -70,8 +70,9 @@ mybatis:
 logging:
   level:
     wjhsService: debug
+    wjhsTaskService: debug
 
   group:
     wjhsService: com.ilovesshan.wjhs.service
-
+    wjhsTaskService: com.ilovesshan.wjhs.core.task
 
