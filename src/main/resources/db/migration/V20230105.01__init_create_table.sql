@@ -1,3 +1,5 @@
+use wjhs;
+
 -- ----------------------------
 -- table structure for account
 -- ----------------------------
@@ -56,6 +58,20 @@ create table `address` (
 ) engine=innodb default charset=utf8mb3 comment='小程序用户地址信息表';
 
 -- ----------------------------
+-- table structure for wx_user_address_rel
+-- ----------------------------
+drop table if exists `wx_user_address_rel`;
+create table `wx_user_address_rel` (
+  `id` varchar(32) character set utf8 collate utf8_danish_ci not null comment '主键id',
+  `user_id` varchar(32) not null comment '用户id',
+  `address_id` varchar(32) not null comment '地址id',
+  `is_delete` char(3) not null default '15' comment '是否删除(14:已删除、15:未删除)',
+  `create_time` datetime default current_timestamp comment '创建时间',
+  `update_time` datetime default current_timestamp on update current_timestamp comment '修改时间',
+  primary key (`id`)
+) engine=innodb default charset=utf8mb3 comment='小程序用户信息和地址信息关联表';
+
+-- ----------------------------
 -- table structure for app_version_upgrade
 -- ----------------------------
 drop table if exists `app_version_upgrade`;
@@ -92,25 +108,6 @@ create table `attachment` (
   `update_time` datetime default current_timestamp on update current_timestamp comment '修改时间',
   primary key (`id`)
 ) engine=innodb default charset=utf8mb3 comment='系统附件表';
-
--- ----------------------------
--- table structure for flyway_schema_history
--- ----------------------------
-drop table if exists `flyway_schema_history`;
-create table `flyway_schema_history` (
-  `installed_rank` int not null,
-  `version` varchar(50) default null,
-  `description` varchar(200) not null,
-  `type` varchar(20) not null,
-  `script` varchar(1000) not null,
-  `checksum` int default null,
-  `installed_by` varchar(100) not null,
-  `installed_on` timestamp not null default current_timestamp,
-  `execution_time` int not null,
-  `success` tinyint(1) not null,
-  primary key (`installed_rank`),
-  key `flyway_schema_history_s_idx` (`success`)
-) engine=innodb default charset=utf8mb3;
 
 -- ----------------------------
 -- table structure for integral_goods
@@ -502,21 +499,3 @@ create table `wx_user` (
   `update_time` datetime default current_timestamp on update current_timestamp comment '修改时间',
   primary key (`id`)
 ) engine=innodb default charset=utf8mb3 comment='小程序用户信息表';
-
--- ----------------------------
--- table structure for wx_user_address_rel
--- ----------------------------
-drop table if exists `wx_user_address_rel`;
-create table `wx_user_address_rel` (
-  `id` varchar(32) character set utf8 collate utf8_danish_ci not null comment '主键id',
-  `user_id` varchar(32) not null comment '用户id',
-  `address_id` varchar(32) not null comment '地址id',
-  `is_delete` char(3) not null default '15' comment '是否删除(14:已删除、15:未删除)',
-  `create_time` datetime default current_timestamp comment '创建时间',
-  `update_time` datetime default current_timestamp on update current_timestamp comment '修改时间',
-  primary key (`id`),
-  unique key `user_id` (`user_id`,`address_id`),
-  key `address_id` (`address_id`),
-  constraint `wx_user_address_rel_ibfk_1` foreign key (`user_id`) references `wx_user` (`id`),
-  constraint `wx_user_address_rel_ibfk_2` foreign key (`address_id`) references `address` (`id`)
-) engine=innodb default charset=utf8mb3 comment='小程序用户信息和地址信息关联表';
