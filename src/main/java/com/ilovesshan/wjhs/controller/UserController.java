@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -61,7 +62,7 @@ public class UserController {
     public R selectById(@PathVariable String id) {
         User user = userService.findUserById(id);
         UserVo userVo = userConverter.po2vo(user);
-        if (userVo.getAttachment().getId() != null) {
+        if (!Objects.isNull(userVo.getAttachment()) && userVo.getAttachment().getId() != null) {
             userVo.setAttachment(attachmentConverter.po2vo(user.getAttachment()));
         } else {
             userVo.setAttachment(null);

@@ -24,6 +24,7 @@ spring:
   redis:
     port: ${REDIS_PORT}
     host: ${REDIS_HOST}
+    password: ${REDIS_PASSWORD}
 
   flyway:
     # 是否启用flyway

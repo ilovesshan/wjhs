@@ -129,7 +129,9 @@ public class AccountServiceImpl implements AccountService {
                 Account account = selectByUserId(user.getId());
                 userAccount.setUserId(user.getId());
                 userAccount.setUsername(user.getUsername());
-                userAccount.setAvatarUrl(user.getAttachment().getUrl());
+                if (!Objects.isNull(user.getAttachment())) {
+                    userAccount.setAvatarUrl(user.getAttachment().getUrl());
+                }
                 userAccount.setBalance(account.getBalance());
                 userAccount.setAccountRecords(account.getAccountRecords());
                 userAccounts.add(userAccount);
