@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Data
 public class AddressCreateDto {
     @NotNull(message = "用户名称不能为空")
-    @Size(max = 24, min = 4, message = "用户名长度在4到24个字符之间")
+    @Size(max = 10, min = 2, message = "用户名长度在2到10个字符之间")
     private String userName;
 
     @NotNull(message = "手机号不能为空")
