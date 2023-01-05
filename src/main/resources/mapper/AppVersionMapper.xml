@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ilovesshan.wjhs.mapper.AppVersionMapper">
+
+    <sql id="allColumns">
+        `id`, `update_status`, `version_code`, `version_name`, `major`, `minor`, `patch`, `modify_content`, `download_url`, `apk_size`, `apk_md5`, `is_delete`, `create_time`, `update_time`
+    </sql>
+
+
+    <update id="insert">
+        INSERT INTO
+            `wjhs`.`app_version_upgrade` (`id`, `update_status`, `version_code`, `version_name`, `major`, `minor`, `patch`, `modify_content`, `download_url`, `apk_size`, `apk_md5`)
+        VALUES
+            (#{id}, #{updateStatus}, #{versionCode}, #{versionName},#{major},#{minor},#{patch}, #{modifyContent}, #{downloadUrl}, #{apkSize}, #{apkMd5});
+    </update>
+
+    <delete id="deleteApkById">
+        update  `wjhs`.`app_version_upgrade` set is_delete = '14' where id = #{ id }
+    </delete>
+
+    <select id="selectMaxVersionApk" resultType="com.ilovesshan.wjhs.beans.pojo.AppVersionUpgrade">
+        select
+            <include refid="allColumns" />
+        from  `wjhs`.`app_version_upgrade`
+        order by create_time desc
+        limit 1;
+    </select>
+
+    <select id="selectById" resultType="com.ilovesshan.wjhs.beans.pojo.AppVersionUpgrade">
+        select
+        <include refid="allColumns" />
+        from  `wjhs`.`app_version_upgrade`
+        where id = #{ id } and is_delete = '15'
+    </select>
+
+    <select id="selectApkList" resultType="com.ilovesshan.wjhs.beans.pojo.AppVersionUpgrade">
+        select
+            <include refid="allColumns" />
+        from  `wjhs`.`app_version_upgrade`
+        where is_delete = '15'
+        order by create_time desc
+    </select>
+
+</mapper>

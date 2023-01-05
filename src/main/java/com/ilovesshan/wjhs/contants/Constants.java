@@ -11,6 +11,9 @@ public class Constants {
     // JWT有效期(1天)
     public static final Long JWT_EXPIRATION = 1000 * 60 * 60 * 24L;
 
+    // JWT有效期(1天)
+    public static final String APK_MD5_KEY = "FF:DF:F8:96:29:E0:E2:C5:8C:74:A5:2F:14:0E:BA:1E";
+
     // JWT令牌信息
     public static final String JWT_KEY = "RANDOM";
 
@@ -35,7 +38,16 @@ public class Constants {
     // 附件上传地址(linux)
     public static final String ATTACHMENT_UPLOAD_LINUX_DEST = "/home/www/wjhs/upload/";
 
-    // 文件预览前缀
-    public static final String FILE_PREVIEW_PREFIX = "/preview/";
+    // 附件预览前缀
+    public static final String ATTACHMENT_PREVIEW_PREFIX = "/preview/";
+
+    // app上传地址(windows)
+    public static final String APP_UPLOAD_WINDOWS_DEST = "D:/www/wjhs/upload/app/";
+
+    // app上传地址(linux)
+    public static final String APP_UPLOAD_LINUX_DEST = "/home/www/wjhs/upload/app/";
+
+    // app下载前缀
+    public static final String APP_DOWNLOAD_PREFIX = "/apk/";
 
 }

@@ -22,14 +22,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 区分当前运行的系统环境
-        registry.addResourceHandler("/preview/**").addResourceLocations("file:" + (SystemUtil.isWindows() ? Constants.ATTACHMENT_UPLOAD_WINDOWS_DEST : Constants.ATTACHMENT_UPLOAD_LINUX_DEST));
+        registry.addResourceHandler(Constants.ATTACHMENT_PREVIEW_PREFIX + "**").addResourceLocations("file:" + (SystemUtil.isWindows() ? Constants.ATTACHMENT_UPLOAD_WINDOWS_DEST : Constants.ATTACHMENT_UPLOAD_LINUX_DEST));
+        registry.addResourceHandler(Constants.APP_DOWNLOAD_PREFIX + "**").addResourceLocations("file:" + (SystemUtil.isWindows() ? Constants.APP_UPLOAD_WINDOWS_DEST : Constants.APP_UPLOAD_LINUX_DEST));
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(securityHandlerInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/auth", "/wx/auth", "/preview/**")
+                .excludePathPatterns("/auth", "/wx/auth", Constants.ATTACHMENT_PREVIEW_PREFIX + "**", Constants.APP_DOWNLOAD_PREFIX + "**")
                 .excludePathPatterns("/doc.html", "/webjars/**", "/img.icons/**", "/swagger-resources/**", "/v2/api-docs");
     }
 }

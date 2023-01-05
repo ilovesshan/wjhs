@@ -57,7 +57,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         // 组装一个Attachment对象 新增到数据库
         Attachment attachment = new Attachment();
         attachment.setId(UuidUtil.generator());
-        attachment.setUrl(Constants.FILE_PREVIEW_PREFIX + fileName);
+        attachment.setUrl(Constants.ATTACHMENT_PREVIEW_PREFIX + fileName);
         attachment.setCreateByUserId(UserCache.get("userId"));
         attachment.setCreateByUserName(UserCache.get("username"));
         attachment.setCreateByUserType(UserCache.get("userType"));

@@ -70,6 +70,11 @@ public class R implements Serializable {
     public static final String ERROR_ATTACHMENT_UPLOAD = "附件上传失败";
     public static final String ERROR_ATTACHMENT_NOTFOUND = "附件不存在";
 
+    public static final String ERROR_FILE_TYPE = "文件类型错误";
+
+    public static final String SUCCESS_APK_UPLOAD = "apk上传成功";
+    public static final String ERROR_APK_UPLOAD = "apk上传失败";
+
 
     private Integer code;
     private String message;
