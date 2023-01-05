@@ -2,10 +2,10 @@
 insert into 
   `wjhs`.`user` (`id`, `username`, `password`, `user_type`, `gender`, `attachment_id`, `nick_name`, `phone`, `is_delete`, `last_visit_time`) 
 values 
-  ('369bcfe480454d22a07a8644f6df0349', 'admin', '_hsf8lwcw9ha2zdsii0ajaossvwkq28ti3sue144kxu=', 0, 20, null, '管理员', 15882712233, 15, null),
-  ('adbd5f0e46474696b65140568e43385e', 'sunlei', '_hsf8lwcw9ha2zdsii0ajaossvwkq28ti3sue144kxu=', 2, 20, null, '孙雷', 15882712233, 15, null),
-  ('796d300069384ee3abf3a318e879c5bd', 'linnana', '_hsf8lwcw9ha2zdsii0ajaossvwkq28ti3sue144kxu=', 2, 20, null, '琳娜娜', 15882712233, 15, null),
-  ('f2532e33786f4b8d9fa2db00f03352fb', 'ilovesshan', '_hsf8lwcw9ha2zdsii0ajaossvwkq28ti3sue144kxu=', 3, 20, null, null, 15882712233,15, null);
+  ('369bcfe480454d22a07a8644f6df0349', 'admin', '_hSF8lwCW9Ha2zdsii0AjaOSsVwKQ28Ti3SUe144KXU=', 0, 20, null, '管理员', 15882712233, 15, null),
+  ('adbd5f0e46474696b65140568e43385e', 'sunlei', '_hSF8lwCW9Ha2zdsii0AjaOSsVwKQ28Ti3SUe144KXU=', 2, 20, null, '孙雷', 15882712233, 15, null),
+  ('796d300069384ee3abf3a318e879c5bd', 'linnana', '_hSF8lwCW9Ha2zdsii0AjaOSsVwKQ28Ti3SUe144KXU=', 2, 20, null, '琳娜娜', 15882712233, 15, null),
+  ('f2532e33786f4b8d9fa2db00f03352fb', 'ilovesshan', '_hSF8lwCW9Ha2zdsii0AjaOSsVwKQ28Ti3SUe144KXU=', 3, 20, null, null, 15882712233,15, null);
 
 
 -- 初始化 角色表数据
